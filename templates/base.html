@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>  a:link {text-decoration: none;}
+  </style>
+    <meta charset="UTF-8">
+    <meta name="Evolutionary Signature of Intrinsically Disordered Regions">
+    <title>{% block title %}{% endblock %}</title> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+</head>
+<body>
+    
+<div class="header">
+  <a href="{{ url_for('index') }}"><h1>Evolutionary Signature of Intrinsically Disordered Regions</h1></a>
+</div>
+
+<div class="topnav">
+  <a href="{{ url_for('index') }}">Home</a>
+  <a href="{{ url_for('about') }}">About</a>
+  <a href="{{ url_for('contact') }}">Contact</a>
+</div>
+
+<div class="row">
+ 
+  <div class="column side"> 
+  <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
+  <button class="button grad">CLUSTER</button>
+  <button class="button grad">TURORIAL</button>
+  <button class="button grad">FAQ</button>
+  <button class="button grad">DOWNLOAD</button>
+  </div>
+  
+  
+  <div class="column middle">
+  {% block body %}{% endblock %}
+  </div>
+  
+  <div class="column side">
+    {% block side %}{% endblock %}
+  </div>
+  <div class="column side">
+    {% block side2 %}{% endblock %}
+  </div>
+</div>
+
+
+<div class="footer">
+  <p>Alan Moses' Lab © 2019</p>
+  <h1b>Links:</h1b><br>
+  <a target=blank href="http://www.moseslab.csb.utoronto.ca/">Moses Lab</a>
+</div>
+
+</body>
+</html>

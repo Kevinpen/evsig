@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Evolutionary Signature of Intrinsically Disordered Regions">
+    <title>Evolutionary Signature Display</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+      <style>  a:link {text-decoration: none;}
+			/* Style tab links */
+				.tablink {
+				  background-color: #555;
+				  color: white;
+				  float: left;
+				  border: none;
+				  outline: none;
+				  cursor: pointer;
+				  padding: 14px 16px;
+				  font-size: 17px;
+				  width: 25%;
+				}
+
+				.tablink:hover {
+				  background-color: #777;
+				}
+
+				/* Style the tab content (and add height:100% for full page content) */
+				.tabcontent {
+				  color: black;
+				  display: none;
+				  padding: 100px 20px;
+				  height: 100%;
+				}
+
+				@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
+
+				ol {
+				  list-style: none;
+				  counter-reset: my-awesome-counter;
+				  display: flex;
+				  flex-wrap: wrap;
+				  margin: 0;
+				  padding: 0;
+				}
+				ol li {
+				  counter-increment: my-awesome-counter;
+				  display: flex;
+				  width: 50%;
+				  font-size: 0.8rem;
+				  margin-bottom: 0.5rem;
+				}
+				ol li::before {
+				  content: "0" counter(my-awesome-counter);
+				  font-weight: bold;
+				  font-size: 3rem;
+				  margin-right: 0.5rem;
+				  font-family: 'Abril Fatface', serif;
+				  line-height: 1;
+				}
+
+
+
+	     body {
+			padding: 1rem;
+			font-family: sans-serif;
+	          }
+	    .body h2{
+                        font-size: 20px;
+                        font-weight: 300;
+                  }
+
+      </style>
+</head>
+<body>
+
+
+<div class="header">
+  <a href="{{ url_for('index') }}"><h1>Evolutionary Signature of Intrinsically Disordered Regions</h1></a>
+
+</div>
+
+<div class="topnav">
+   <a href="{{ url_for('index') }}">home</a>
+  <a href="{{ url_for('about') }}">About</a>
+  <a href="{{ url_for('contact') }}">Contact</a>
+</div>
+
+<div class="row">
+  <div class="column side">
+  <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
+  <form action="{{ url_for('static', filename='construction.html') }}">
+  <button class="button grad">CLUSTER</a></button>
+  </form>
+  <form action="{{ url_for('static', filename='construction.html') }}">
+  <button class="button grad">TURORIAL</button>
+  </form>
+  <form action="{{ url_for('static', filename='construction.html') }}">
+  <button class="button grad">FAQ</button>
+  </form>
+  <form action="{{ url_for('static', filename='construction.html') }}">
+  <button class="button grad">DOWNLOAD</button>
+  </form>
+  </div>
+
+<div class="column right " style="padding:5px">
+	<button class="tablink" onclick="openPage('Overview', this,'orange')"id={{default1}}>Overview</button>
+	<button class="tablink" onclick="openPage('Group Views', this,'chocolate')">Group Views</button>
+	<button class="tablink" onclick="openPage('Details', this, 'lightgreen' )"id={{default2}}>Details</button>
+  <button class="tablink" onclick="openPage('Similar IDRs', this, 'lightcoral')">Similar IDRs</button>
+
+	<div id="Overview" class="tabcontent">
+		<div class=row >
+				<div class="body">
+					<h2b>Evolutionary signature of {{name}}</h2b>
+					<hr size="3" noshade>
+				</div>
+	</div>
+	<img src="{{ url_for('static', filename='image/sigpro'+gid+'.png') }}";	style="width: 700px;
+						 float:left;padding:0px;margin:15px" alt="sigpro.png">
+	<div class=row padding:15px;>
+	<p>  Evolutionary signature is a measure of to what extent some molecular features of this intrinsically disordered regions are under selection in evolution, thus imply the functions of the IDR.</p>
+	<p> The measure is a deviation of actual molecular feartures in this IDR to that of simulated evolution of the IDR, calculated as z-scores.</p>
+
+	<p>For Yeast, Z-scores of 82 features for both deviation of mean and log-variance values are calculated, a total of 164 z-scores comprise the evolutonary signature of the IDR.</p>
+
+	<h2> Explore in steps: </h2>
+
+	<ol>
+		<li>Get an overview of 164 Z-scores, find values of features that might be interesing to you.</li>
+		<li>Click "Groupview" tab to see sorted top features by groups, View details of Z-scores in every group in "Details" tab. </li>
+		<li>Find what are the similar IDRs in terms of signature.</li>
+	</ol>
+	</div>
+
+
+ </div>
+
+	<div id="Group Views" class="tabcontent">
+		<div class=row >
+        <div class="body">
+					<h2b>Sorted Top ZScores for Every Group</h2b>
+					<hr size="3" noshade>
+				</div>
+
+		<img src="{{ url_for('static', filename='image/sigbar'+gid+'.png') }}";
+              style="width: 700px;     float:left;padding:0px;margin:15px" alt="sigbar.png">
+		<div>
+        <p>Signature Absolute Values Sorted by Group for this IDR (top 5 z-score barplot for every groups).</p>
+        <p>The 82 molecular features included are divided into 5 categories(groups):<br> amino acid contents,<br>
+ charge properties,<br> motifs,<br> repeats and complexity,<br> physicochemical properties.<br> <br>For the 5 categories, both deviation of mean and log-variance values are calculated.
+        </p>
+				<p> See actual Z-score in every group in "Details" tab.
+			</div>
+		</div>
+	</div>
+
+
+	<div id="Details" class="tabcontent">
+		<div class="column right " style="padding:5px">
+		   <div class=row >
+		        <div class="body">
+				<h2b>Details of Signature Z-scores of Every Group</h2b>
+				<hr size="3" noshade>
+		    		</div>
+
+		  </div>
+			<div>
+		        <img src="{{ url_for('static',
+		                   filename='image/sigdiv'+gid+'g'+group+'.png') }}"style="width: 500px;float:left;
+		                   padding:0;margin:35px;"alt="sigbar.png">
+		   </div>
+		    <br>
+
+		   <div class="row" >
+
+		   <p>The left plot shows detailed z-score values for one molecular feature group. To see another
+		      group, choose from one of the following:</p>
+
+
+		   <form action="/search" method="post" >
+		   <input  type="radio" name="group"  value="{{name}},1">Mean amino acid</input><br>
+		   <input  type="radio" name="group"  value="{{name}},2">Mean charge property</input><br>
+		   <input  type="radio" name="group"  value="{{name}},3">Mean motif</input><br>
+		   <input  type="radio" name="group"  value="{{name}},4">Mean Physicochemical</input><br>
+		   <input  type="radio" name="group"  value="{{name}},5">Mean repeats</input><br>
+		   <input  type="radio" name="group"  value="{{name}},6">Variance amino acid</input><br>
+		   <input  type="radio" name="group"  value="{{name}},7">Variance charge property</input><br>
+		   <input  type="radio" name="group"  value="{{name}},8">Variance motif</input><br>
+		   <input  type="radio" name="group"  value="{{name}},9">Variance Physicochemical</input><br>
+		   <input  type="radio" name="group"  value="{{name}},10">Variance repeats</input><br>
+		   <br>
+		   <input type="submit" name="submit_button" value="Go!">
+		   </form>
+		 </div>
+	 </div>
+	</div>
+
+	<div id="Similar IDRs" class="tabcontent">
+		<div class=row>
+					<div class="body">
+						<h2b>Similar IDRs</h2b>
+						<hr size="3" noshade>
+			</div>
+		<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below, choose one to see their z-scores:
+		 <form target="_blank" action="/search" method="post" >
+		 <input  type="radio" name="simi"  value="{{ simi[0] }}">{{simi[0]}},  &nbsp &nbsp  Protein common name:  {{ simicom[0] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[1] }}">{{simi[1]}},  &nbsp &nbsp  Protein common name:  {{ simicom[1] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[2] }}">{{simi[2]}},  &nbsp &nbsp  Protein common name:  {{ simicom[2] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[3] }}">{{simi[3]}},  &nbsp &nbsp  Protein common name:  {{ simicom[3] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[4] }}">{{simi[4]}},  &nbsp &nbsp  Protein common name:  {{ simicom[4] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[5] }}">{{simi[5]}},  &nbsp &nbsp   Protein common name:  {{ simicom[5] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[6] }}">{{simi[6]}},  &nbsp &nbsp  Protein common name:  {{ simicom[6] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[7] }}">{{simi[7]}},  &nbsp &nbsp  Protein common name:  {{ simicom[7] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[8] }}">{{simi[8]}},  &nbsp &nbsp  Protein common name:  {{ simicom[8] }}</input><br>
+		 <input  type="radio" name="simi"  value="{{ simi[9] }}">{{simi[9]}},  &nbsp &nbsp  Protein common name:  {{ simicom[9] }}</input><br>
+		 <br>
+		 <input  type="submit" name="submit_simi" value="Go!">
+		 </form>
+
+		</div>
+	</div>
+
+	<script>
+	function openPage(pageName,elmnt,color) {
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+	    tabcontent[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablink");
+	  for (i = 0; i < tablinks.length; i++) {
+	    tablinks[i].style.backgroundColor = "";
+	  }
+	  document.getElementById(pageName).style.display = "block";
+	  elmnt.style.backgroundColor = color;
+	}
+
+	// Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen").click();
+	</script>
+
+
+
+
+
+</div>
+
+  </div>
+
+
+
+
+</div>
+
+<div class="footer">
+  <p>Alan Moses' Lab © 2019</p>
+  <h1b>Links:</h1b><br>
+  <a target=blank href="http://www.moseslab.csb.utoronto.ca/">Moses Lab</a>
+</div>
+</body>
+
+</div>
+
+</html>

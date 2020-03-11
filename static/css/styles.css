@@ -1,0 +1,138 @@
+
+.header {
+  padding: 10px;
+  margin-top: 0px; 
+  padding-top: 5px;
+  text-align: left;
+  background-image: linear-gradient(to top, #d8dee4   , #f0f3f7 );
+      text-decoration: none;  
+}
+* {
+  box-sizing: border-box;
+}
+.header h1 {
+  font-size: 25px;
+  color: #d20005; 
+}
+.header h1b {
+  font-size: 15px;
+  color: #d20005    
+}
+
+
+body {
+  font-family: Arial,Helvetica, sans-serif;
+  padding: 10px;
+  background: #f1f1f1;
+}
+.body h2b{
+  font-size: 20px;
+  font-weight: 300; 
+}
+.body t1{
+  font-size: 11px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #e6eaef;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: right;
+  display: block;
+  color: #566573 ;
+  text-align: right;
+  padding:  10px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 15px;
+}
+
+/* Left and right column */
+.column.side {
+  width: 15%;
+  font-size: 14px;
+ 
+}
+
+/* Middle column */
+.column.middle {
+  width: 50%;
+  font-family: Arial;
+  font-size: 14px;
+  background-color: white;
+}
+.column.right{
+  width:85%;
+  font-family: Arial;
+  font-size: 14px;
+  background-color: white;
+}
+.column.wide{
+  width: 40%;
+  float: right;
+  font-family: Arial;
+  font-size: 14px;
+  background-color: white;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle,.column.full {
+    width: 100%;
+  }
+}
+
+
+.button {
+  border: none;
+  color: white;
+  height: 25px;
+  width: 150px;
+  padding:5px;
+  text-align: left;
+  font-family: "Arial Black", Gadget, sans-serif
+  font-size: 22px; font-style: normal;
+  font-weight: 1000;
+  display: inline-block;
+
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 9px
+}
+.grad {background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%)}
+.btn-grad:hover { background-position: right center; }
+.black {background: #36072d; width: 180px;float: left;font-size: 12px}
+li:focus {
+  background: lightgreen;
+}
+/* Footer */
+.footer {
+  padding: 15px;
+  font-size: 15px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
