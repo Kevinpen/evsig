@@ -111,17 +111,18 @@
 	<div id="Overview" class="tabcontent">
 		<div class=row >
 				<div class="body">
-					<h2b>Evolutionary signature of {{name}}</h2b>
+					<h2b>Evolutionary signature of {{name}} in dataset " {{datasetname}} "</h2b>
 					<hr size="3" noshade>
 				</div>
 	</div>
 	<img src="{{ url_for('static', filename='image/sigpro'+gid+'.png') }}";	style="width: 700px;
-						 float:left;padding:0px;margin:15px" alt="sigpro.png">
-	<div class=row padding:15px;>
+						 float:left;padding:0px;margin:35px" alt="sigpro.png">
+	<div class=row padding:25px;>
 	<p>  Evolutionary signature is a measure of to what extent some molecular features of this intrinsically disordered regions are under selection in evolution, thus imply the functions of the IDR.</p>
 	<p> The measure is a deviation of actual molecular feartures in this IDR to that of simulated evolution of the IDR, calculated as z-scores.</p>
 
 	<p>For Yeast, Z-scores of 82 features for both deviation of mean and log-variance values are calculated, a total of 164 z-scores comprise the evolutonary signature of the IDR.</p>
+	<p>IDRs can be compared for their similarities of evolutionary signature, please see "Similar IDRs" below.</p>
 
 	<h2> Explore in steps: </h2>
 
@@ -159,8 +160,8 @@
 		<div class="column right " style="padding:5px">
 		   <div class=row >
 		        <div class="body">
-				<h2b>Details of Signature Z-scores of Every Group</h2b>
-				<hr size="3" noshade>
+							<h2b>Details of Signature Z-scores of Every Group</h2b>
+							<hr size="3" noshade>
 		    		</div>
 
 		  </div>
@@ -178,16 +179,9 @@
 
 
 		   <form action="/search" method="post" >
-		   <input  type="radio" name="group"  value="{{name}},1">Mean amino acid</input><br>
-		   <input  type="radio" name="group"  value="{{name}},2">Mean charge property</input><br>
-		   <input  type="radio" name="group"  value="{{name}},3">Mean motif</input><br>
-		   <input  type="radio" name="group"  value="{{name}},4">Mean Physicochemical</input><br>
-		   <input  type="radio" name="group"  value="{{name}},5">Mean repeats</input><br>
-		   <input  type="radio" name="group"  value="{{name}},6">Variance amino acid</input><br>
-		   <input  type="radio" name="group"  value="{{name}},7">Variance charge property</input><br>
-		   <input  type="radio" name="group"  value="{{name}},8">Variance motif</input><br>
-		   <input  type="radio" name="group"  value="{{name}},9">Variance Physicochemical</input><br>
-		   <input  type="radio" name="group"  value="{{name}},10">Variance repeats</input><br>
+		   {% for gl in range(group_list.shape[0]) %}
+		        <input  type="radio" name="group"  value="{{name}},{{group_list.iloc[gl,5]}},{{dataset}}">{{group_list.iloc[gl,0]}} {{group_list.iloc[gl,2]}}</input><br>
+		   {% endfor %}
 		   <br>
 		   <input type="submit" name="submit_button" value="Go!">
 		   </form>
@@ -203,16 +197,9 @@
 			</div>
 		<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below, choose one to see their z-scores:
 		 <form target="_blank" action="/search" method="post" >
-		 <input  type="radio" name="simi"  value="{{ simi[0] }}">{{simi[0]}},  &nbsp &nbsp  Protein common name:  {{ simicom[0] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[1] }}">{{simi[1]}},  &nbsp &nbsp  Protein common name:  {{ simicom[1] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[2] }}">{{simi[2]}},  &nbsp &nbsp  Protein common name:  {{ simicom[2] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[3] }}">{{simi[3]}},  &nbsp &nbsp  Protein common name:  {{ simicom[3] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[4] }}">{{simi[4]}},  &nbsp &nbsp  Protein common name:  {{ simicom[4] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[5] }}">{{simi[5]}},  &nbsp &nbsp   Protein common name:  {{ simicom[5] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[6] }}">{{simi[6]}},  &nbsp &nbsp  Protein common name:  {{ simicom[6] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[7] }}">{{simi[7]}},  &nbsp &nbsp  Protein common name:  {{ simicom[7] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[8] }}">{{simi[8]}},  &nbsp &nbsp  Protein common name:  {{ simicom[8] }}</input><br>
-		 <input  type="radio" name="simi"  value="{{ simi[9] }}">{{simi[9]}},  &nbsp &nbsp  Protein common name:  {{ simicom[9] }}</input><br>
+		   {%for simiidr in simi %}
+		      <input  type="radio" name="simi"  value="{{ simiidr.split(";")[0].strip() }},{{dataset}}">{{simiidr.split(";")[0].strip()}},  &nbsp &nbsp  Protein common name: {{simiidr.split(";")[1].strip()}} </input><br>
+		   {% endfor %}
 		 <br>
 		 <input  type="submit" name="submit_simi" value="Go!">
 		 </form>

@@ -6,7 +6,7 @@
     <form target="_blank" action="/search" method="post" >
     {% for i in name%}
     
-   <input  type="radio" name="ccid"  value="{{ i }}">{{ i }}</input><br><br>
+   <input  type="radio" name="ccid"  value="{{ i }},{{dataset}}">{{ i }}</input><br><br>
     {% endfor %}
    <br>
    <input  type="submit" name="submit_choice_cid" value="Go!">

@@ -1,22 +1,22 @@
 
 .header {
   padding: 10px;
-  margin-top: 0px; 
+  margin-top: 0px;
   padding-top: 5px;
   text-align: left;
   background-image: linear-gradient(to top, #d8dee4   , #f0f3f7 );
-      text-decoration: none;  
+      text-decoration: none;
 }
 * {
   box-sizing: border-box;
 }
 .header h1 {
   font-size: 25px;
-  color: #d20005; 
+  color: #d20005;
 }
 .header h1b {
   font-size: 15px;
-  color: #d20005    
+  color: #d20005
 }
 
 
@@ -27,7 +27,7 @@ body {
 }
 .body h2b{
   font-size: 20px;
-  font-weight: 300; 
+  font-weight: 300;
 }
 .body t1{
   font-size: 11px;
@@ -66,7 +66,7 @@ body {
 .column.side {
   width: 15%;
   font-size: 14px;
- 
+
 }
 
 /* Middle column */
@@ -94,7 +94,7 @@ body {
 .row:after {
   content: "";
   display: table;
-  
+
   clear: both;
 }
 

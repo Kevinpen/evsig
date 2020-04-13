@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request
-import sig,sigh
+import sig
 
 
 
@@ -11,109 +11,65 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
       if 'submit' in request.form:
-        species = request.form.get('species') # Get species info
-        if species == 'Human':
-          #User search human idr
+          dataset = request.form.get('dataset') # Get dataset info
+          if dataset=="Yeast":
+              dataset=0
+          elif dataset=="Human": 
+              dataset=1
           cid= request.form.get('cid') # User input protein common name
           if cid:
-              name = sigh.getindex_cid(cid)
+              name = sig.getindex_cid(cid, dataset)
               if name==[]:
-                  return render_template("message.html", message="Sorry, can't find any protein by that name.")
+                  return render_template("message.html", message="Sorry, can't find any protein by that name in this dataset, please check the name or dataset.")
               elif len(name)>1:
-                  return render_template("choiceh.html", name=name, cid=cid)
+                  return render_template("choice.html", name=name, cid=cid, dataset=dataset)
               else:
-                  index=sigh.getindex_idr(name[0])
+                  index=sig.getindex_idr(name[0], dataset)
 
           sid= request.form.get('sid')# User input protein systematic name
           if sid:
-              name = sigh.getindex_sid(sid)
+              name = sig.getindex_sid(sid, dataset)
               if name==[]:
-                  return render_template("message.html", message="Sorry, can't find any protein by that name.")
+                  return render_template("message.html", message="Sorry, can't find any protein by that name in this dataset, please check the name or dataset.")
               elif len(name)>1:
-                  return render_template("choiceh.html", name=name, cid=sid)
+                  return render_template("choice.html", name=name, cid=sid, dataset=dataset)
               else:
-                  index=sigh.getindex_idr(name[0])
+                  index=sig.getindex_idr(name[0], dataset)
 
           idrname = str(request.form.get('idrname'))# User input IDR name
           if idrname:
-              index = sigh.getindex_idr(idrname)
+              index = sig.getindex_idr(idrname, dataset)
               if index == -1:
-                      return render_template("message.html", message="Sorry, can't find any IDR by that name.", \
+                      return render_template("message.html", message="Sorry, can't find any IDR by that name in this dataset, please check the name or dataset.", \
                       message2="The format of IDR name is: <protein systematic name>_aa_<start>-<end>" )
-          sigh.sighviz(index,"bar")
-          group = 2
-          sigh.sighviz(index,"div",group)
-          sigh.sighpro(index)
-
-          #Find list of similar idr
-          similist=sigh.simi(index)
-          name=similist[0] # The first item of list is original IDR
-          simi=similist[1:11]
-          #Find common name for similar IDRs
-          simicom=[None]*10
-          for i in range(10):
-              simi_index=sigh.getindex_idr(simi[i])
-              simicom[i]=sigh.getname(simi_index)
-
-          group_str=str(group)
-          idrname=""
-          cid=""
-          sid=""
-          return render_template("hsearch.html",simi=simi, simicom=simicom,name=name,
-                 gid=str(index),group=group_str)
-
-        else:# If user search yeast
-
-          cid= request.form.get('cid') # User input protein common name
-          if cid:
-              name = sig.getindex_cid(cid)
-              if name==[]:
-                  return render_template("message.html", message="Sorry, can't find any protein by that name.")
-              elif len(name)>1:
-                  return render_template("choice.html", name=name, cid=cid)
-              else:
-                  index=sig.getindex_idr(name[0])
-
-          sid= request.form.get('sid')# User input protein systematic name
-          if sid:
-              name = sig.getindex_sid(sid)
-              if name==[]:
-                  return render_template("message.html", message="Sorry, can't find any protein by that name.")
-              elif len(name)>1:
-                  return render_template("choice.html", name=name, cid=sid)
-              else:
-                  index=sig.getindex_idr(name[0])
-
-          idrname = str(request.form.get('idrname'))# User input IDR name
-          if idrname:
-              index = sig.getindex_idr(idrname)
-              if index == -1:
-                      return render_template("message.html", message="Sorry, can't find any IDR by that name.", \
-                      message2="The format of IDR name is: <protein systematic name>_aa_<start>-<end>" )
-          sig.sigviz(index,"bar")
+          else: 
+              return render_template("message.html", message="No input received, Please input either protein name or IDR name before click 'Go!'")
+          sig.sigviz(index,"bar", 1,dataset=dataset)
           group = 1
-          sig.sigviz(index,"div",group)
-          sig.sigpro(index)
+          sig.sigviz(index,"div",group, dataset)
+          sig.sigpro(index, dataset)
 
           #Find list of similar idr
-          similist=sig.simi(index)
+          similist=sig.getsimi(index, dataset)
           name=similist[0] # The first item of list is original IDR
           simi=similist[1:11]
           #Find common name for similar IDRs
-          simicom=[None]*10
           for i in range(10):
-            simi_index=sig.getindex_idr(simi[i])
-            simicom[i]=sig.getname(simi_index)
+              simi_index=sig.getindex_idr(simi[i], dataset)
+              simi[i]=simi[i]+";"+(sig.getname(simi_index, dataset))
+
           group_str=str(group)
+          group_list=sig.getgroup(dataset)
+          datasetname=sig.get_dataset_name(dataset)
           idrname=""
           cid=""
           sid=""
-          return render_template("search.html", gid=str(index),simi=simi, simicom=simicom,name=name,group=group_str,default1="defaultOpen",default2="other")
+          return render_template("search.html",dataset=dataset,datasetname = datasetname, gid=str(index),simi=simi, name=name,group=group_str,
+                                 group_list=group_list,default1="defaultOpen",default2="other")
+
 
     elif request.method == 'GET':
       return render_template("index.html")
-
-
 
 
 @app.route('/contact/')
@@ -133,12 +89,16 @@ def search():
 
       if 'submit_button' in request.form: # Response for user choose other group in diversion plot
           group_tuple = request.form.get('group') #Value get from page submit is tuple of name and group
+          if group_tuple is None:
+              return render_template("message.html", message="No feature chosen, Please choose one of the molecular features before click 'Go!'")
           idrname=group_tuple.split(",")[0]
-          index = sig.getindex_idr(idrname)
+          dataset = int(group_tuple.split(",")[2])
+          index = sig.getindex_idr(idrname, dataset)
           group=int(group_tuple.split(",")[1])
-          sig.sigviz(index,"bar")
-          sig.sigviz(index,"div",group)
-          sig.sigpro(index)
+          sig.sigviz(index,"bar", dataset=dataset)
+          sig.sigviz(index,"div",group, dataset)
+          sig.sigpro(index, dataset)
+          
 
           #Specify to default open "Detail" tab
           default2="defaultOpen"
@@ -147,81 +107,47 @@ def search():
 
 
       elif 'submit_choice_cid' in request.form: #Response for user choose one IDR from multiple IDRs in one protein
-          ccid = str(request.form.get('ccid'))
-          index = sig.getindex_idr(ccid)
-          sig.sigviz(index,"bar")
+          ccid_tuple = str(request.form.get('ccid'))
+          #return "{}".format(ccid_tuple)
+          if ccid_tuple == "None":
+              return render_template("message.html", message="No IDR chosen, Please choose one of the IDRs before click 'Go!'")
+          ccid = ccid_tuple.split(",")[0]
+          dataset = int(ccid_tuple.split(",")[1])
+          index = sig.getindex_idr(ccid, dataset)      
+          sig.sigviz(index,"bar", 1, dataset=dataset)
           group = 1
-          sig.sigviz(index,"div",group)
-          sig.sigpro(index)
+          sig.sigviz(index,"div",group, dataset)
+          sig.sigpro(index, dataset)
 
       elif 'submit_simi' in request.form: #Response for user search similar IDR
-          idrname = str(request.form.get('simi'))
-          index = sig.getindex_idr(idrname)
-          sig.sigviz(index,"bar")
+          idrname_tuple = str(request.form.get('simi'))
+          if idrname_tuple == "None":
+              return render_template("message.html", message="No IDR chosen, Please choose one of the IDRs before click 'Go!'")          
+          idrname = idrname_tuple.split(",")[0]
+          dataset = int(idrname_tuple.split(",")[1])
+          index = sig.getindex_idr(idrname, dataset)
+          sig.sigviz(index,"bar", dataset=dataset)
           group = 1
-          sig.sigviz(index,"div",group)
-          sig.sigpro(index)
+          sig.sigviz(index,"div",group, dataset)
+          sig.sigpro(index, dataset)
 
       #Find list of similar idr
-      similist=sig.simi(index)
+      similist=sig.getsimi(index, dataset)
       name=similist[0] # The first item of list is original IDR
       simi=similist[1:11]
       #Find common name for similar IDRs
-      simicom=[None]*10
       for i in range(10):
-          simi_index=sig.getindex_idr(simi[i])
-          simicom[i]=sig.getname(simi_index)
+          simi_index=sig.getindex_idr(simi[i], dataset)
+          simi[i]=simi[i]+";"+(sig.getname(simi_index, dataset))
       group_str=str(group)
       idrname=""
-      return render_template("search.html", gid=str(index),simi=simi, simicom=simicom,name=name,group=group_str,default1=default1,default2=default2)
+      group_list=sig.getgroup(dataset)
+      datasetname=sig.get_dataset_name(dataset)
+      return render_template("search.html",dataset=dataset, datasetname=datasetname,gid=str(index),simi=simi, name=name,group=group_str,
+                             group_list=group_list,default1=default1,default2=default2)
 
     elif request.method == 'GET':
-       return render_template('search.html',gid=gid,simi=simi,simicom=simicom,name=name,group=group,default1=default1,default2=default2)
-
-
-@app.route('/hsearch',methods=['POST','GET'])  # Response for human search
-def hsearch():
-    if request.method == 'POST':
-      if 'submit_button' in request.form: # Response for user choose other group in diversion plot
-          group_tuple = request.form.get('group') #Value get from page submit is tuple of name and group
-          idrname=group_tuple.split(",")[0]
-          index = sigh.getindex_idr(idrname)
-          group=int(group_tuple.split(",")[1])
-          sigh.sighviz(index,"bar")
-          sigh.sighviz(index,"div",group)
-          sigh.sighpro(index)
-
-      elif 'submit_choice_cid' in request.form: #Response for user choose one IDR from multiple IDRs in one protein
-          ccid = str(request.form.get('ccid'))
-          index = sigh.getindex_idr(ccid)
-          sigh.sighviz(index,"bar")
-          group = 2
-          sigh.sighviz(index,"div",group)
-          sigh.sighpro(index)
-
-      elif 'submit_simi' in request.form: #Response for user search similar IDR
-          idrname = str(request.form.get('simi'))
-          index = sigh.getindex_idr(idrname)
-          sigh.sighviz(index,"bar")
-          group = 2
-          sigh.sighviz(index,"div",group)
-          sigh.sighpro(index)
-
-      #Find list of similar idr
-      similist=sigh.simi(index)
-      name=similist[0] # The first item of list is original IDR
-      simi=similist[1:11]
-      #Find common name for similar IDRs
-      simicom=[None]*10
-      for i in range(10):
-            simi_index=sigh.getindex_idr(simi[i])
-            simicom[i]=sigh.getname(simi_index)
-      group_str=str(group)
-      idrname=""
-
-      return render_template("hsearch.html", gid=str(index),simi=simi,simicom=simicom,name=name,group=group_str)
-    elif request.method == 'GET':
-       return render_template('hsearch.html',gid=gid,simi=simi,simicom=simicom,name=name,group=group)
+       return render_template('search.html', gid=str(index), simi=simi,name=name,group=group,default1=default1,default2=default2)
 
 
 
