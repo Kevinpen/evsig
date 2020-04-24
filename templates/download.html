@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title%}Download{% endblock %}
+
+{% block body%}
+<h2>Download</h2>
+
+We are makeing the data set available for direct download.<br>
+<br>
+1, Below is dataset used for Yeast_elife_2019 IDR evolutionary signature search:<br>
+<br>
+
+To download the csv file, <a href="{{ url_for('sig_yeast') }}"download="sig_yeast.csv">click here </a>
+<br>
+<br>
+2, The Dataset for Human IDR evolutionary signature search:<br>
+<br>
+To download the human data csv file, <a href="{{ url_for('sig_human') }}"download="sig_human.csv">click here </a>
+
+{% endblock %}
+   {% block side%}
+    <h2>Paper Citation</h2>
+    <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. doi: 10.1101/578716</p>
+  {% endblock %}

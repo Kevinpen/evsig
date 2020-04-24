@@ -1,0 +1,11 @@
+mean/var	short name(1-7)	long name	start	end	group id
+Mean	charge	Charge Properties	4	6	1
+Mean	aa	Amino Acid Fraction	7	14	2
+Mean	motif	Motifs	15	59	3
+Mean	repeats	Repeats	60	75	4
+Mean	phasep	Phase Separation	76	77	5
+Mean	physic	Physicochemical Properties	78	86	6
+Log Variance	charge	Charge Properties	87	88	7
+Log Variance	aa	Amino Acid Fraction	89	96	8
+Log Variance	motif	Motifs	97	141	9
+Log Variance	physic	Physicochemical Properties	142	149	10

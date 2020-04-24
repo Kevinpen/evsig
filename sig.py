@@ -6,17 +6,18 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator)
 import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid.parasite_axes import SubplotHost
+plt.rc('xtick',labelsize=6)
+plt.rc('ytick',labelsize=8)
 
-
-datasets = pd.read_csv("./sig/dataset_config.csv", sep='\t')
+datasets = pd.read_csv("./templates/dataset_config.csv", sep='\t')
 
 sigs = []
 groups = []
 sims = []
 for i in range(datasets.shape[0]):
-    sigs.append(pd.read_csv("./sig/"+datasets.iloc[i,1],low_memory=False,sep='\t'))
-    groups.append(pd.read_csv("./sig/"+datasets.iloc[i,2],sep='\t'))
-    sims.append(pd.read_csv("./sig/"+datasets.iloc[i,3],sep='\t', header=None))
+    sigs.append(pd.read_csv("./templates/"+datasets.iloc[i,1],low_memory=False,sep='\t'))
+    groups.append(pd.read_csv("./templates/"+datasets.iloc[i,2],sep='\t', dtype={"start":int,"end":int,"group_id":int}))
+    sims.append(pd.read_csv("./templates/"+datasets.iloc[i,3],sep='\t', header=None))
     
 for i in range(datasets.shape[0]):
     sigs[i].iloc[:,3:] = sigs[i].iloc[:,3:].fillna(0)
@@ -43,7 +44,7 @@ def getindex_cid(name, dataset):
     index = []
     for i in range(len(sigs[dataset])):
         cid =  sigs[dataset].iloc[i,2]  # in this table, third column is common name separated by ";"
-        if cid.lower() == name.lower():
+        if  name.lower() == cid.lower():
             index.append(sigs[dataset].iloc[i,0])
     return index
 
@@ -84,11 +85,10 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
         group_abs[x][y] = sorted(pd.Series.tolist(abs(sigs[dataset].iloc[i,groups[dataset].iloc[y,3]-1:groups[dataset].iloc[y,4]])), reverse=True)
     
     #Calculate number of features in every group
-    group_len = [[groups[x].iloc[y,4] - groups[x].iloc[y,3] + 1 for y in range(len(groups[dataset]))] for x in range(datasets.shape[0])]
+    group_len = [groups[dataset].iloc[y,4] - groups[dataset].iloc[y,3] + 1 for y in range(len(groups[dataset]))] 
      
     #Group with maximum 5 feature length
-    group_len_limited = [[min(group_len[x][y] ,5) for y in range(len(groups[dataset]))] for x in range(datasets.shape[0])]
-
+    group_len_limited = [min(group_len[y] ,5) for y in range(len(groups[dataset]))] 
 
 
     
@@ -100,33 +100,30 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
         fig1.add_subplot(ax1) 
         
         # Make the plot
-        colors = ['#36072d', '#910f3f', '#9c0615', '#d45a26', '#edc92b', '#36072d', '#910f3f', '#9c0615', '#d45a26', '#edc92b'  ]
-        for x in range(10):
-            plt.bar(sum(len for len in group_len_limited[dataset][0:x]) + np.arange(min(group_len[dataset][x],5))+1, group_abs[dataset][x][0:5],
-                    color=colors[x], width=barWidth, edgecolor='white')
+        colors = ['#36072d', '#910f3f', '#9c0615', '#d45a26', '#edc92b']
+        for x in range(groups[dataset].shape[0]):
+            plt.bar(sum(len for len in group_len_limited[0:x]) + np.arange(min(group_len[x],5))+1, group_abs[dataset][x][0:5],
+                    color=colors[x%5], width=barWidth, edgecolor='white')
 
 
      
         # Add xticks on the middle of the group bars
-        #plt.xlabel('group', fontweight='bold')
-        plt.ylabel('z-score', fontweight='bold')
-        #plt.xticks(2+np.arange(50,step=5), ['mean_aa','mean_charge', 'mean_motif', 'mean_physic', 'mean_repeats',
-                  #'var_aa','var_charge' ,'var_motif' , 'var_physic','var_repeats']
-        #,fontsize=6)    
-        
-        ax1.xaxis.set_major_locator(MultipleLocator(5))
-        labels = [item.get_text() for item in ax1.get_xticklabels()]
-        labels[1:11] = '  aa','       charge','       motif','       physic','        repeat','       aa','       charge','       motif','       physic','        repeat'
-        ax1.set_xticklabels(labels,fontsize=8)
+        plt.ylabel('z-score', fontweight='bold')      
+        ax1.xaxis.set_major_locator(MultipleLocator(sum(group_len_limited)/(len(group_len_limited)-1)))
+        labels = [" "] +[group for group in groups[dataset].iloc[:,1] ] + [" "]
+        ax1.set_xticklabels(labels,ha='right')
  
         ax2 = ax1.twiny()
         offset = 0, -20 # Position of the second axis
         new_axisline = ax2.get_grid_helper().new_fixed_axis
         ax2.axis["bottom"] = new_axisline(loc="bottom", axes=ax2, offset=offset)
         ax2.axis["top"].set_visible(False)
-        ax2.set_xticks([0.0, 0.5, 1.0])
+        #calculate where to cut group 
+        count_mean=groups[dataset].iloc[:,0]=="Mean"
+        group_cut=count_mean.value_counts()[1]/groups[dataset].shape[0]
+        ax2.set_xticks([0.0, group_cut, 1.0])
         ax2.xaxis.set_major_formatter(ticker.NullFormatter())
-        ax2.xaxis.set_minor_locator(ticker.FixedLocator([0.25,0.75]))
+        ax2.xaxis.set_minor_locator(ticker.FixedLocator([group_cut/2, (1 - group_cut)/2 + group_cut]))
         ax2.xaxis.set_minor_formatter(ticker.FixedFormatter(['mean', 'log variance']))
     
         ax3 = ax1.twiny()
@@ -183,37 +180,35 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
 
 #Draw profile plot
 def sigpro(IDR, dataset):
-    
+
     values = sigs[dataset].iloc[IDR,3:]
     fig1 = plt.figure()
     fig1.set_size_inches(7, 3.5)
-    plt.subplots_adjust(bottom=0.22)
+    plt.subplots_adjust(bottom=0.20)
     ax1 = SubplotHost(fig1, 111)
     fig1.add_subplot(ax1) 
     plt.ylabel("Z-Scores")
-    #xloc=[len(mean_aa),len(mean_motif),len(mean_charge),len(mean_physic),len(mean_repeats)]
     ax1.stem(values, markerfmt=' ',use_line_collection=True,basefmt='k-')
-    ax1.xaxis.set_major_locator(MultipleLocator(16.4))
-    labels = [item.get_text() for item in ax1.get_xticklabels()]
-    labels[1:11] = 'aa','charge','motif','physic','repeat','aa','charge','motif','physic','repeat'
-    ax1.set_xticklabels(labels, horizontalalignment="left",fontsize=8)
+    ax1.xaxis.set_major_locator(MultipleLocator(len(values)/(groups[dataset].shape[0]-1)))
+    labels = [" "] +[group for group in groups[dataset].iloc[:,1] ]
+    ax1.set_xticklabels(labels, horizontalalignment="right")
     plt.grid(axis='y')
-    
+
     max=np.amax(values)
     max_x=np.argmax(np.array(values))
     min=np.amin(values)
     min_x=np.argmin(np.array(values))
-    ax1.annotate(sigs[dataset].columns[max_x+3],fontsize=8,
+    ax1.annotate(sigs[dataset].columns[max_x+3],fontsize=7,
             xy=(max_x, max), xycoords='data',bbox=dict(boxstyle="round", fc="0.8"),
             xytext=(15, 15), textcoords='offset points',
             arrowprops=dict(arrowstyle="->",
                             connectionstyle="angle,angleA=0,angleB=90,rad=10"))
 
-    ax1.annotate(sigs[dataset].columns[min_x+3],fontsize=8,xy=(min_x, min), xycoords='data',
-            xytext=(15, 15), textcoords='offset points',
+    ax1.annotate(sigs[dataset].columns[min_x+3],fontsize=7,xy=(min_x, min), xycoords='data',
+            xytext=(12, 12), textcoords='offset points',
             bbox=dict(boxstyle="round", fc="0.8"),
             arrowprops=dict(arrowstyle="->",
-                            connectionstyle="angle,angleA=0,angleB=-90,rad=10"))
+                            connectionstyle="angle,angleA=90,angleB= 0,rad=10"))
     for k in range(4, int(plt.ylim()[1])):
         ax1.axhspan(k, k+1, color='sandybrown', alpha=0.3)
     for k in range(int(plt.ylim()[0]),-4):
@@ -224,9 +219,12 @@ def sigpro(IDR, dataset):
     new_axisline = ax2.get_grid_helper().new_fixed_axis
     ax2.axis["bottom"] = new_axisline(loc="bottom", axes=ax2, offset=offset)
     ax2.axis["top"].set_visible(False)
-    ax2.set_xticks([0.0, 0.5, 1.0])
+    #calculate where to cut group 
+    count_mean=groups[dataset].iloc[:,0]=="Mean"
+    group_cut=count_mean.value_counts()[1]/groups[dataset].shape[0]
+    ax2.set_xticks([0.0, group_cut, 1.0])
     ax2.xaxis.set_major_formatter(ticker.NullFormatter())
-    ax2.xaxis.set_minor_locator(ticker.FixedLocator([0.25,0.75]))
+    ax2.xaxis.set_minor_locator(ticker.FixedLocator([group_cut/2, (1 - group_cut)/2 + group_cut]))
     ax2.xaxis.set_minor_formatter(ticker.FixedFormatter(['mean', 'log variance']))
     
     ax3 = ax1.twiny()

@@ -11,12 +11,16 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
       if 'submit' in request.form:
-          dataset = request.form.get('dataset') # Get dataset info
-          if dataset=="Yeast":
+          datasets = request.form.get('dataset') # Get dataset info
+          if datasets=="Yeast_elife_2019":
               dataset=0
-          elif dataset=="Human": 
+          elif datasets=="Human": 
               dataset=1
+          elif datasets=="Yeast_2020": 
+              dataset=2    
           cid= request.form.get('cid') # User input protein common name
+          sid= request.form.get('sid')# User input protein systematic name
+          idrname = str(request.form.get('idrname'))# User input IDR name
           if cid:
               name = sig.getindex_cid(cid, dataset)
               if name==[]:
@@ -25,9 +29,9 @@ def index():
                   return render_template("choice.html", name=name, cid=cid, dataset=dataset)
               else:
                   index=sig.getindex_idr(name[0], dataset)
-
-          sid= request.form.get('sid')# User input protein systematic name
-          if sid:
+    
+          
+          elif sid:
               name = sig.getindex_sid(sid, dataset)
               if name==[]:
                   return render_template("message.html", message="Sorry, can't find any protein by that name in this dataset, please check the name or dataset.")
@@ -36,8 +40,8 @@ def index():
               else:
                   index=sig.getindex_idr(name[0], dataset)
 
-          idrname = str(request.form.get('idrname'))# User input IDR name
-          if idrname:
+          
+          elif idrname:
               index = sig.getindex_idr(idrname, dataset)
               if index == -1:
                       return render_template("message.html", message="Sorry, can't find any IDR by that name in this dataset, please check the name or dataset.", \
@@ -78,6 +82,34 @@ def contact():
 @app.route('/about/')
 def about():
     return render_template('about.html')
+@app.route('/faq/')
+def faq():
+    return render_template('faq.html')
+@app.route('/download/')
+def download():
+    return render_template('download.html')
+@app.route('/sig_yeast/')
+def sig_yeast():
+    return render_template('sig_yeast.csv')
+@app.route('/sig_human/')
+def sig_human():
+    return render_template('sig_human.csv')
+@app.route('/cluster/')
+def cluster():
+    return render_template('cluster.html')
+@app.route('/yeast_cdt/')
+def yeast_cdt():
+    return render_template('tz_evolsig_clusterplot_mar13.cdt')
+@app.route('/yeast_gtr/')
+def yeast_gtr():
+    return render_template('tz_evolsig_clusterplot_mar13.gtr')
+@app.route('/yeast_jtv/')
+def yeast_jtv():
+    return render_template('tz_evolsig_clusterplot_mar13.jtv')
+@app.route('/elife_supp1/')
+def elife_supp1():
+    return render_template('Feature_symbol.csv')
+
 
 
 @app.route('/search',methods=['POST','GET']) #Response for yeast search

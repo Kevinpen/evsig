@@ -1,3 +1,0 @@
-dataset name	data file name	group.comfig file name	similar_idr file name
-Yeast	sig_yeast.csv	group_config_yeast.csv	sim_yeast.csv
-Human	sig_human.csv	group_config_human.csv	sim_human.csv

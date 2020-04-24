@@ -1,0 +1,11 @@
+mean/var	short name(1-7)	long name	start	end	group id
+Mean	aa	Amino Acid	4	11	1
+Mean	charge	Charge Properties	12	20	2
+Mean	motif	Motifs	21	57	3
+Mean	physic	Physicochemical Properties	58	68	4
+Mean	repeat	Repeats and Complexity	69	85	5
+Log Variance	aa	Amino Acid	86	93	6
+Log Variance	charge	Charge Properties	94	102	7
+Log Variance	motif	Motifs	103	139	8
+Log Variance	physic	Physicochemical Properties	140	150	9
+Log Variance	repeat	Repeats and Complexity	151	167	10

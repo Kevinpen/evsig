@@ -1,0 +1,4 @@
+dataset name	data file name	group.comfig file name	similar_idr file name
+yeast_elife-2019 	sig_yeast.csv	group_config_yeast.csv	sim_yeast.csv
+Human	sig_human.csv	group_config_human.csv	sim_human.csv
+yeast_2020	sig_yeast_2020.csv	group_config_yeast_2020.csv	sim_yeast_2020.csv

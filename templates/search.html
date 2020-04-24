@@ -88,16 +88,13 @@
 <div class="row">
   <div class="column side">
   <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
-  <form action="{{ url_for('static', filename='construction.html') }}">
+  <form action="{{ url_for('cluster') }}">
   <button class="button grad">CLUSTER</a></button>
   </form>
-  <form action="{{ url_for('static', filename='construction.html') }}">
-  <button class="button grad">TURORIAL</button>
-  </form>
-  <form action="{{ url_for('static', filename='construction.html') }}">
+  <form action="{{ url_for('faq') }}">
   <button class="button grad">FAQ</button>
   </form>
-  <form action="{{ url_for('static', filename='construction.html') }}">
+  <form action="{{ url_for('download') }}">
   <button class="button grad">DOWNLOAD</button>
   </form>
   </div>
@@ -121,13 +118,11 @@
 	<p>  Evolutionary signature is a measure of to what extent some molecular features of this intrinsically disordered regions are under selection in evolution, thus imply the functions of the IDR.</p>
 	<p> The measure is a deviation of actual molecular feartures in this IDR to that of simulated evolution of the IDR, calculated as z-scores.</p>
 
-	<p>For Yeast, Z-scores of 82 features for both deviation of mean and log-variance values are calculated, a total of 164 z-scores comprise the evolutonary signature of the IDR.</p>
-	<p>IDRs can be compared for their similarities of evolutionary signature, please see "Similar IDRs" below.</p>
 
 	<h2> Explore in steps: </h2>
 
 	<ol>
-		<li>Get an overview of 164 Z-scores, find values of features that might be interesing to you.</li>
+		<li>Get an overview of all Z-scores, find values of features that might be interesting to you.</li>
 		<li>Click "Groupview" tab to see sorted top features by groups, View details of Z-scores in every group in "Details" tab. </li>
 		<li>Find what are the similar IDRs in terms of signature.</li>
 	</ol>
@@ -147,9 +142,10 @@
               style="width: 700px;     float:left;padding:0px;margin:15px" alt="sigbar.png">
 		<div>
         <p>Signature Absolute Values Sorted by Group for this IDR (top 5 z-score barplot for every groups).</p>
-        <p>The 82 molecular features included are divided into 5 categories(groups):<br> amino acid contents,<br>
- charge properties,<br> motifs,<br> repeats and complexity,<br> physicochemical properties.<br> <br>For the 5 categories, both deviation of mean and log-variance values are calculated.
-        </p>
+
+        {% for gl in range(group_list.shape[0]) %}
+		        <li>{{group_list.iloc[gl,0]}}  {{group_list.iloc[gl,2]}} </li>
+		{% endfor %}
 				<p> See actual Z-score in every group in "Details" tab.
 			</div>
 		</div>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title%}Faq{% endblock %}
+
+{% block body%}
+
+<h2>Frequently Asked Questions</h2>
+
+<h4>1, How are the most similar IDRs decided?</h4>
+
+The most similar IDRs are those with smallest distances to the currently searching IDR. The definition of distance is Pearson correlation between the vectors of 
+all Z-scores in an evolutionary signature. <br>
+<br>
+To find the most similar IDRs, the distances of current IDR to all IDRs in data set are calculated, only the 10 with smallest distances are listed.<br>
+<br>
+The list of most similar IDRs may differ from the adjacent IDRs in cluster.<br>
+
+ <h4>2, How to interpret the evolutionary signature?</h4>
+ 
+The evolutionary signature is a set of Z-scores, it is defined and calculated so that IDRs with similar evolutionary signature have similar functions.<br>
+<br>
+Unlike structured regions of protein, intrinsically disordered regions are hard to assign functions based on amino acid sequences alone, and the amino acid sequences 
+are usually not conserved in evolution.
+ The paper (Zarin et. al, 2019) found that some molecular features are conserved in evolution of Saccharomyces cerevisiae.<br>
+ <br>
+As (a set of) Z-scores, the evolutionary signature is a measure of deviation, it is the degree of molecular features deviate from the simulated evolution.
+ The calculation is subtract the mean of the simulations (μ) from the real value (x) and divided by the standard deviation of the simulations (σ). The
+  formula for the Z-score is Z = (x- μ)/ σ. For all molecular features, the mean and log standard deviation Z-scores are calculated and divided in groups.
+  
+<h4>3, What are those molecular feature symbols like "DOC_CKS1_1" stand for?</h4>
+These symbols are explained in Supplementary tables in the Zarin et. al, 2019 paper. You can download the tables 
+<a href="{{ url_for('elife_supp1') }}"download="Feature_symbol.csv"> here </a>.
+
+<h4>4, Will there be new data for other species available?</h4>
+There will be new data set released, not only for other species but also new version of currently available species. Please check our data update. 
+
+{% endblock %}
+
+   {% block side%}
+    <h2>Paper Citation</h2>
+    <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. doi: 10.1101/578716</p>
+  {% endblock %}
+

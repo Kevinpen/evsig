@@ -25,10 +25,15 @@
  
   <div class="column side"> 
   <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
+  <form action="{{ url_for('cluster') }}">
   <button class="button grad">CLUSTER</button>
-  <button class="button grad">TURORIAL</button>
+  </form>
+  <form action="{{ url_for('faq') }}">
   <button class="button grad">FAQ</button>
+  </form>
+  <form action="{{ url_for('download') }}">
   <button class="button grad">DOWNLOAD</button>
+  </form>
   </div>
   
   
