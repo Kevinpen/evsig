@@ -9,7 +9,9 @@ from mpl_toolkits.axes_grid.parasite_axes import SubplotHost
 plt.rc('xtick',labelsize=6)
 plt.rc('ytick',labelsize=8)
 
-datasets = pd.read_csv("./templates/dataset_config.csv", sep='\t')
+datasets = pd.read_table("./templates/dataset_config.csv")
+yeast_ref = pd.read_table("./templates/yeast_reference.csv")
+
 
 sigs = []
 groups = []
@@ -24,7 +26,6 @@ for i in range(datasets.shape[0]):
     
 for i in range(datasets.shape[0]):
     sigs[i].iloc[:,1:3] = sigs[i].iloc[:,1:3].fillna("N/A")
-
 
 
 #Get group 
@@ -65,6 +66,17 @@ def getsimi(IDR, dataset):
 def getname(index, dataset):
     return sigs[dataset].iloc[index,2]
 
+# Find sysmatic name/uniprot id from index
+def getsys(index, dataset):
+    return sigs[dataset].iloc[index,1]
+
+# Find Yeast uniprot id from sysmatic name
+def getuni(sys):
+    for i in range(len(yeast_ref)):
+        if yeast_ref.iloc[i,0] == sys:
+            return yeast_ref.iloc[i,1]
+    return None   
+
 def get_dataset_name(index):
     return datasets.iloc[index,0]
 
@@ -73,22 +85,22 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
     i=IDR
     
     # ZScore Values of every group sorted by absolute value
-    group_sort = [[None for _ in range(len(groups[dataset]))] for _ in range(datasets.shape[0])]
-    for x in range(datasets.shape[0]):
-      for y in range(len(groups[dataset])):
-        group_sort[x][y] = sorted(pd.Series.tolist(sigs[dataset].iloc[i,groups[dataset].iloc[y,3]-1:groups[dataset].iloc[y,4]]), key =abs, reverse=True)
+    group_sort = [None for _ in range(len(groups[dataset]))] 
+    #for x in range(datasets.shape[0]):
+    for y in range(len(groups[dataset])):
+        group_sort[y] = sorted(sigs[dataset].iloc[i,groups[dataset].iloc[y,3]-1:groups[dataset].iloc[y,4]], key =abs, reverse=True)
         
     # Sortd absolute ZScore values for features in every group
-    group_abs = [[None for _ in range(len(groups[dataset]))] for _ in range(datasets.shape[0])]
-    for x in range(datasets.shape[0]):
-      for y in range(len(groups[dataset])):
-        group_abs[x][y] = sorted(pd.Series.tolist(abs(sigs[dataset].iloc[i,groups[dataset].iloc[y,3]-1:groups[dataset].iloc[y,4]])), reverse=True)
+    group_abs = [None for _ in range(len(groups[dataset]))] 
+    #for x in range(datasets.shape[0]):
+    for y in range(len(groups[dataset])):
+        group_abs[y] = sorted(pd.Series.tolist(abs(sigs[dataset].iloc[i,groups[dataset].iloc[y,3]-1:groups[dataset].iloc[y,4]])), reverse=True)
     
     #Calculate number of features in every group
     group_len = [groups[dataset].iloc[y,4] - groups[dataset].iloc[y,3] + 1 for y in range(len(groups[dataset]))] 
      
     #Group with maximum 5 feature length
-    group_len_limited = [min(group_len[y] ,5) for y in range(len(groups[dataset]))] 
+    group_len_limited = [np.minimum(group_len[y] ,5) for y in range(len(groups[dataset]))] 
 
 
     
@@ -102,7 +114,7 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
         # Make the plot
         colors = ['#36072d', '#910f3f', '#9c0615', '#d45a26', '#edc92b']
         for x in range(groups[dataset].shape[0]):
-            plt.bar(sum(len for len in group_len_limited[0:x]) + np.arange(min(group_len[x],5))+1, group_abs[dataset][x][0:5],
+            plt.bar(sum(len for len in group_len_limited[0:x]) + np.arange(np.minimum(group_len[x],5))+1, group_abs[x][0:5],
                     color=colors[x%5], width=barWidth, edgecolor='white')
 
 
@@ -150,7 +162,7 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
         group_name = groups[dataset].iloc[Group-1,2]
         colnames = sigs[dataset].columns.values
         feature = colnames[groups[dataset].iloc[Group-1,3]-1:groups[dataset].iloc[Group-1,4]]
-        score_list = group_sort[dataset][Group-1][0:10]
+        score_list = group_sort[Group-1][0:10]
         score_list=[x for x in reversed(score_list) if ~np.isnan(x)]
         fvalue=sigs[dataset][feature].iloc[i]
         feature_list=[None]*len(score_list)

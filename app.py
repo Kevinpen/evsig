@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request
 import sig
-
+import pandas as pd
 
 
 app = Flask(__name__)
@@ -9,15 +9,21 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST','GET'])
 def index():
+
+    datasets = pd.read_csv("./templates/dataset_config.csv", sep='\t')
+    datasets_name = datasets.iloc[:,0]
+    examples = []
+    for i in range(datasets.shape[0]):
+        for j in range(4,7):
+           examples.append(datasets.iloc[i,j])
+           
     if request.method == 'POST':
       if 'submit' in request.form:
-          datasets = request.form.get('dataset') # Get dataset info
-          if datasets=="Yeast_elife_2019":
-              dataset=0
-          elif datasets=="Human": 
-              dataset=1
-          elif datasets=="Yeast_2020": 
-              dataset=2    
+          dataset = request.form.get('dataset') # Get dataset info
+          if (dataset is None):
+                  return render_template("message.html", message="Dataset not selected, Please select dataset and input either protein name or IDR name before click 'Go!'")
+          dataset = datasets.index[datasets.iloc[:,0] == dataset][0]
+    
           cid= request.form.get('cid') # User input protein common name
           sid= request.form.get('sid')# User input protein systematic name
           idrname = str(request.form.get('idrname'))# User input IDR name
@@ -65,15 +71,18 @@ def index():
           group_str=str(group)
           group_list=sig.getgroup(dataset)
           datasetname=sig.get_dataset_name(dataset)
+          sysid=sig.getsys(index,dataset)
+          if datasetname.split("_")[0]=="Yeast":
+              sysid=sig.getuni(sysid)
           idrname=""
           cid=""
           sid=""
-          return render_template("search.html",dataset=dataset,datasetname = datasetname, gid=str(index),simi=simi, name=name,group=group_str,
+          return render_template("search.html",dataset=dataset,datasetname = datasetname, gid=str(index),simi=simi, name=name,sys=sysid,group=group_str,
                                  group_list=group_list,default1="defaultOpen",default2="other")
 
 
     elif request.method == 'GET':
-      return render_template("index.html")
+      return render_template("index.html",datasets_name=datasets_name,examples=examples)
 
 
 @app.route('/contact/')
@@ -91,9 +100,16 @@ def download():
 @app.route('/sig_yeast/')
 def sig_yeast():
     return render_template('sig_yeast.csv')
-@app.route('/sig_human/')
-def sig_human():
-    return render_template('sig_human.csv')
+@app.route('/sig_human_disopred3/')
+def sig_human_disopred3():
+    return render_template('sig_human_disopred3.csv')
+@app.route('/sig_human_SPOTd/')
+def sig_human_SPOTd():
+    return render_template('sig_human_SPOTd.csv')
+@app.route('/sig_yeast_2020/')
+def sig_yeast_2020():
+    return render_template('sig_yeast_2020.csv')
+
 @app.route('/cluster/')
 def cluster():
     return render_template('cluster.html')
@@ -175,7 +191,10 @@ def search():
       idrname=""
       group_list=sig.getgroup(dataset)
       datasetname=sig.get_dataset_name(dataset)
-      return render_template("search.html",dataset=dataset, datasetname=datasetname,gid=str(index),simi=simi, name=name,group=group_str,
+      sysid=sig.getsys(index,dataset)
+      if datasetname.split("_")[0]=="Yeast":
+              sysid=sig.getuni(sysid)
+      return render_template("search.html",dataset=dataset, datasetname=datasetname,gid=str(index),simi=simi, name=name,sys=sysid,group=group_str,
                              group_list=group_list,default1=default1,default2=default2)
 
     elif request.method == 'GET':

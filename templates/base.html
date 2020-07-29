@@ -4,7 +4,7 @@
   <style>  a:link {text-decoration: none;}
   </style>
     <meta charset="UTF-8">
-    <meta name="Evolutionary Signature of Intrinsically Disordered Regions">
+    <meta name="Evolutionary Signatures of Intrinsically Disordered Regions">
     <title>{% block title %}{% endblock %}</title> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     
@@ -12,7 +12,7 @@
 <body>
     
 <div class="header">
-  <a href="{{ url_for('index') }}"><h1>Evolutionary Signature of Intrinsically Disordered Regions</h1></a>
+  <a href="{{ url_for('index') }}"><h1>Evolutionary Signatures of Intrinsically Disordered Regions</h1></a>
 </div>
 
 <div class="topnav">
@@ -23,7 +23,7 @@
 
 <div class="row">
  
-  <div class="column side"> 
+  <div class="column side2"> 
   <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
   <form action="{{ url_for('cluster') }}">
   <button class="button grad">CLUSTER</button>
@@ -44,7 +44,7 @@
   <div class="column side">
     {% block side %}{% endblock %}
   </div>
-  <div class="column side">
+  <div class="column full">
     {% block side2 %}{% endblock %}
   </div>
 </div>

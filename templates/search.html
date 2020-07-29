@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="Evolutionary Signature of Intrinsically Disordered Regions">
+    <meta name="Evolutionary Signatures of Intrinsically Disordered Regions">
     <title>Evolutionary Signature Display</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
@@ -75,7 +75,7 @@
 
 
 <div class="header">
-  <a href="{{ url_for('index') }}"><h1>Evolutionary Signature of Intrinsically Disordered Regions</h1></a>
+  <a href="{{ url_for('index') }}"><h1>Evolutionary Signatures of Intrinsically Disordered Regions</h1></a>
 
 </div>
 
@@ -86,7 +86,7 @@
 </div>
 
 <div class="row">
-  <div class="column side">
+  <div class="column side2">
   <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
   <form action="{{ url_for('cluster') }}">
   <button class="button grad">CLUSTER</a></button>
@@ -108,23 +108,27 @@
 	<div id="Overview" class="tabcontent">
 		<div class=row >
 				<div class="body">
-					<h2b>Evolutionary signature of {{name}} in dataset " {{datasetname}} "</h2b>
+					<h2b>Evolutionary signature of {{name}} in dataset " {{datasetname}} " </h2b>
+					<a href="https://www.uniprot.org/uniprot/{{sys}}" target="_blank">Link to Uniprot page for this protein</a>
 					<hr size="3" noshade>
 				</div>
 	</div>
 	<img src="{{ url_for('static', filename='image/sigpro'+gid+'.png') }}";	style="width: 700px;
 						 float:left;padding:0px;margin:35px" alt="sigpro.png">
 	<div class=row padding:25px;>
-	<p>  Evolutionary signature is a measure of to what extent some molecular features of this intrinsically disordered regions are under selection in evolution, thus imply the functions of the IDR.</p>
-	<p> The measure is a deviation of actual molecular feartures in this IDR to that of simulated evolution of the IDR, calculated as z-scores.</p>
-
+	<p> Evolutionary signatures describe the extent to which molecular features of intrinsically disordered regions deviate from our null expectation in their evolution. 
+	If a molecular feature deviates in its evolution from our null expectation, we predict it is under selection, and thus may be important for the function of the IDR 
+	in question. Evolutionary signatures can be used as a tool to generate hypotheses about molecular features that could be important for the function of individual IDRs.
+	<a href="{{ url_for('faq')}}" target="_blank" style="color:red">(More on FAQ)</a></p>
+	 
+	
 
 	<h2> Explore in steps: </h2>
 
 	<ol>
-		<li>Get an overview of all Z-scores, find values of features that might be interesting to you.</li>
-		<li>Click "Groupview" tab to see sorted top features by groups, View details of Z-scores in every group in "Details" tab. </li>
-		<li>Find what are the similar IDRs in terms of signature.</li>
+		<li>- Get an overview of all Z-scores, and find values of features that might be interesting to you.</li>
+		<li>- Click "Groupview" tab to see sorted top features by groups of molecular features. View details of Z-scores in every group in the "Details" tab. </li>
+		<li>- Find other IDRs with similar evolutionary signatures.</li>
 	</ol>
 	</div>
 
@@ -134,19 +138,19 @@
 	<div id="Group Views" class="tabcontent">
 		<div class=row >
         <div class="body">
-					<h2b>Sorted Top ZScores for Every Group</h2b>
+					<h2b>Sorted Top ZScore Absolute Values for Every Group</h2b>
 					<hr size="3" noshade>
 				</div>
 
 		<img src="{{ url_for('static', filename='image/sigbar'+gid+'.png') }}";
               style="width: 700px;     float:left;padding:0px;margin:15px" alt="sigbar.png">
 		<div>
-        <p>Signature Absolute Values Sorted by Group for this IDR (top 5 z-score barplot for every groups).</p>
+        <p>Evolutionary signature values (absolute value) sorted by molecular feature group for this IDR (top 5 Z-score absolute values barplot for every group).</p>
 
         {% for gl in range(group_list.shape[0]) %}
 		        <li>{{group_list.iloc[gl,0]}}  {{group_list.iloc[gl,2]}} </li>
 		{% endfor %}
-				<p> See actual Z-score in every group in "Details" tab.
+				<p> See Z-score value for every group in the "Details" tab. 
 			</div>
 		</div>
 	</div>
@@ -180,7 +184,9 @@
 		   {% endfor %}
 		   <br>
 		   <input type="submit" name="submit_button" value="Go!">
-		   </form>
+		   </form><br>
+		          <p> <a href="{{ url_for('faq')}}" target="_blank" style="color:red">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
+                  <p>For definitions of the molecular feature labels, you can download a table <a href="{{ url_for('elife_supp1') }}"download="Feature_symbol.csv"> here </a>.</p>
 		 </div>
 	 </div>
 	</div>
@@ -191,7 +197,8 @@
 						<h2b>Similar IDRs</h2b>
 						<hr size="3" noshade>
 			</div>
-		<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below, choose one to see their z-scores:
+		<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below. Choose one to see its evolutionary signature: </p>
+		<p><a href="{{ url_for('faq')}}" target="_blank" style="color:red"> (How are these similar IDRs determined?)</a></p>
 		 <form target="_blank" action="/search" method="post" >
 		   {%for simiidr in simi %}
 		      <input  type="radio" name="simi"  value="{{ simiidr.split(";")[0].strip() }},{{dataset}}">{{simiidr.split(";")[0].strip()}},  &nbsp &nbsp  Protein common name: {{simiidr.split(";")[1].strip()}} </input><br>
