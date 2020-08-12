@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>  a:link {text-decoration: none;}
-  </style>
     <meta charset="UTF-8">
-    <meta name="Evolutionary Signatures of Intrinsically Disordered Regions">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description", content="Evolutionary Signatures of Intrinsically Disordered Regions">
+    <meta name="author" content="Alan Moses' Lab, Gang Peng">
     <title>{% block title %}{% endblock %}</title> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     
 </head>
 <body>
     
-<div class="header">
-  <a href="{{ url_for('index') }}"><h1>Evolutionary Signatures of Intrinsically Disordered Regions</h1></a>
-</div>
+<header>
+  <div class="container">
+  <a href="{{ url_for('index') }}"><h1>Evolutionary Signatures <span class="shine">of Intrinsically Disordered Regions</span></h1></a>
+  </div>
+</header>
 
 <div class="topnav">
+  <div class="container">
   <a href="{{ url_for('index') }}">Home</a>
   <a href="{{ url_for('about') }}">About</a>
   <a href="{{ url_for('contact') }}">Contact</a>
+  </div>
 </div>
 
-<div class="row">
- 
-  <div class="column side2"> 
-  <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
-  <form action="{{ url_for('cluster') }}">
-  <button class="button grad">CLUSTER</button>
-  </form>
-  <form action="{{ url_for('faq') }}">
-  <button class="button grad">FAQ</button>
-  </form>
-  <form action="{{ url_for('download') }}">
-  <button class="button grad">DOWNLOAD</button>
-  </form>
-  </div>
-  
-  
-  <div class="column middle">
-  {% block body %}{% endblock %}
-  </div>
-  
-  <div class="column side">
-    {% block side %}{% endblock %}
-  </div>
-  <div class="column full">
-    {% block side2 %}{% endblock %}
+<div class="row"> 
+  <div class="container">
+    <div class="column sidenav"> 
+      <div class='container'>
+        <a href="{{ url_for('index') }}">
+        <button class="button">SEARCH</button>
+        </a>
+        <form action="{{ url_for('cluster') }}">
+        <button class="button">CLUSTER</button>
+        </form>
+        <form action="{{ url_for('faq') }}">
+        <button class="button">FAQ</button>
+        </form>
+        <form action="{{ url_for('download') }}">
+        <button class="button">DOWNLOAD</button>
+        </form>
+      </div>
+    </div>
+    
+    
+    <div class="column middle">
+      <div class="container">
+      {% block body %}{% endblock %}
+      </div>
+    </div>
+    
+    <div class="column side">
+      <div class="container">
+      {% block side %}{% endblock %}
+      </div>
+    </div>  
+    <div class="column full">
+      {% block side2 %}{% endblock %}
+    </div>
+
+
+    </div>
   </div>
 </div>
 

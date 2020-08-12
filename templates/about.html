@@ -2,11 +2,19 @@
 {% block title%}About
 {% endblock %}
    {% block body%}
+   <h2>About this website</h2>
 <p>This website is dedicated to data demonstration and download for the paper "Proteome-wide signatures of function in highly diverged intrinsically disordered regions".</p>
 <p>The website is hosted by Moses Lab.</p>
 <p>The Moses Lab is affiliated with the departments of Cell and Systems Biology, Computer Science, and Ecology and Evolutionary Biology at the University of Toronto. </p>
+   <div class=dark>
+      <h2>New Paper, FAIDR method</h2>
+      <p>A new paper on evolutionary signatures of intrinsically disordered regions and their application on identifying molecular features that are associated with biological function, is available now as <a href ="https://www.biorxiv.org/content/10.1101/2020.06.23.167361v1">preprint</a>.</p>
+      <p>The paper proposed the method: FAIDR (for Feature Analysis of Intrinsically Disordered Regions). This website used this method on some of the IDRs that are at least annotated to one of the GO terms in our selected annotation dataset.</p>
+      <p>When searching for an IDR, part of the result using FAIDR can be seen on "ZFplot" tab of the search result.  </p>
+    </div>
    {% endblock %}
-  
+
+
    {% block side%}
     <h2>Paper Citation</h2>
     <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. doi: 10.1101/578716</p>

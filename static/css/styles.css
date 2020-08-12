@@ -1,30 +1,49 @@
 
-.header {
+/* Global */
+.container{
+  width:90%;
+  margin:auto;
+  overflow:hidden;
+}
+
+header {
   padding: 10px;
   margin-top: 0px;
   padding-top: 5px;
   text-align: left;
-  background-image: linear-gradient(to top, #d8dee4   , #f0f3f7 );
-      text-decoration: none;
+
+  text-decoration: none;
+}
+header .shine {
+  color: #04ACDC;
 }
 * {
   box-sizing: border-box;
 }
-.header h1 {
+header h1 {
   font-size: 25px;
-  color: #d20005;
+  color: #046C94;
 }
-.header h1b {
+header h1b {
   font-size: 15px;
   color: #d20005
 }
-
+header a:link{
+  text-decoration: none;
+}
 
 body {
   font-family: Arial,Helvetica, sans-serif;
+  font-size:14px;
   padding: 10px;
   background: #f1f1f1;
 }
+.body h2a{
+  font-size: 16px;
+  font-weight: 300;
+ 
+}
+
 .body h2b{
   font-size: 20px;
   font-weight: 300;
@@ -33,13 +52,13 @@ body {
   font-size: 11px;
 }
 
-/* Style the top navigation bar */
+/* Top navigation bar */
 .topnav {
   overflow: hidden;
   background-color: #e6eaef;
 }
 
-/* Style the topnav links */
+/* Topnav links */
 .topnav a {
   float: right;
   display: block;
@@ -60,33 +79,37 @@ body {
 .column {
   float: left;
   padding: 15px;
+  margin:15px;
 }
 
-/* Left and right column */
+/* Right side column */
 .column.side {
-  width: 15%;
-  font-size: 14px;
+  width: 28%;
+  background-color: rgb(219, 147, 59);
+  color:#ffffff;
+}
+/* Left side nav */
+.column.sidenav {
+  width: 10%;
+  padding-left:0; padding-right:0;
+}
+.column.full {
+  width: 100%;
 
 }
-
 /* Middle column */
 .column.middle {
   width: 50%;
-  font-family: Arial;
-  font-size: 14px;
   background-color: white;
+  padding-bottom: 30px;
 }
 .column.right{
-  width:85%;
-  font-family: Arial;
-  font-size: 14px;
+  width:80%;
   background-color: white;
 }
 .column.wide{
   width: 40%;
   float: right;
-  font-family: Arial;
-  font-size: 14px;
   background-color: white;
 }
 
@@ -94,37 +117,40 @@ body {
 .row:after {
   content: "";
   display: table;
-
   clear: both;
 }
 
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .column.side, .column.middle,.column.full {
-    width: 100%;
-  }
+.dark{
+  background-color: rgb(219, 147, 59);
+  color:#ffffff;
+  padding:10px;
 }
-
-
 .button {
   border: none;
   color: white;
   height: 25px;
-  width: 150px;
-  padding:5px;
-  text-align: left;
-  font-family: "Arial Black", Gadget, sans-serif
-  font-size: 22px; font-style: normal;
+  width: 100px;
+  padding:3px;
+  text-align: center;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 14px; font-style: normal;
   font-weight: 1000;
   display: inline-block;
-
-  margin: 4px 2px;
+  margin: 4px 0px;
   cursor: pointer;
-  border-radius: 9px
+  border-radius: 6px;
+  background-color: #04ACDC;
 }
-.grad {background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%)}
-.btn-grad:hover { background-position: right center; }
-.black {background: #36072d; width: 180px;float: left;font-size: 12px}
+
+.button   a:link{
+  text-decoration: none;
+}
+
+.button.active{
+  background-color: darkorange;
+  outline: none;
+  box-shadow: 0 0 0 3px lightskyblue;
+}
 li:focus {
   background: lightgreen;
 }
@@ -135,4 +161,82 @@ li:focus {
   text-align: center;
   background: #ddd;
   margin-top: 20px;
+}
+
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 20%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: black;
+  display: none;
+  padding: 70px 20px;
+  height: 100%;
+}
+
+ol {
+  list-style: none;
+  counter-reset: my-awesome-counter;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+ol li {
+  counter-increment: my-awesome-counter;
+  display: flex;
+  width: 50%;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+ol li::before {
+  content: "0" counter(my-awesome-counter);
+  font-weight: bold;
+  font-size: 3rem;
+  margin-right: 0.5rem;
+  font-family: 'Abril Fatface', serif;
+  line-height: 1;
+}
+
+
+.tablink a:link {text-decoration: none;}
+
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
+/* Responsive layout */
+@media screen and (max-width:1024px) {
+  .column.side, .column.middle,.column.full, .column.sidenav {
+    float:none;
+    width: 100%;
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .button {
+    float:left;
+    margin:2px;
+  }
+  .tablink{
+    padding: 5px 8px;
+    font-size: 14px;
+    width: 20%;
+  }
+}
+@media screen and (max-width:1024px) {
+  .button {
+    font-size: 12px;
+    width:90px;
+  }
 }

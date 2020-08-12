@@ -9,17 +9,17 @@ from mpl_toolkits.axes_grid.parasite_axes import SubplotHost
 plt.rc('xtick',labelsize=6)
 plt.rc('ytick',labelsize=8)
 
-datasets = pd.read_table("./templates/dataset_config.csv")
-yeast_ref = pd.read_table("./templates/yeast_reference.csv")
+datasets = pd.read_table("./data/dataset_config.csv")
+yeast_ref = pd.read_table("./data/yeast_reference.csv")
 
 
 sigs = []
 groups = []
 sims = []
 for i in range(datasets.shape[0]):
-    sigs.append(pd.read_csv("./templates/"+datasets.iloc[i,1],low_memory=False,sep='\t'))
-    groups.append(pd.read_csv("./templates/"+datasets.iloc[i,2],sep='\t', dtype={"start":int,"end":int,"group_id":int}))
-    sims.append(pd.read_csv("./templates/"+datasets.iloc[i,3],sep='\t', header=None))
+    sigs.append(pd.read_csv("./data/"+datasets.iloc[i,1],low_memory=False,sep='\t'))
+    groups.append(pd.read_csv("./data/"+datasets.iloc[i,2],sep='\t', dtype={"start":int,"end":int,"group_id":int}))
+    sims.append(pd.read_csv("./data/"+datasets.iloc[i,3],sep='\t', header=None))
     
 for i in range(datasets.shape[0]):
     sigs[i].iloc[:,3:] = sigs[i].iloc[:,3:].fillna(0)
@@ -152,7 +152,7 @@ def sigviz(IDR, Format="bar", Group=1, dataset=0):
         
         figbar = plt.gcf()
         figbar.subplots_adjust(bottom=0.22)
-        figbar.set_size_inches(7, 3.5)
+        figbar.set_size_inches(6, 3)
         figbar.savefig('./static/image/sigbar'+str(i)+'.png', dpi=100)
  
         return()
@@ -251,7 +251,7 @@ def sigpro(IDR, dataset):
     ax3.xaxis.set_minor_formatter(ticker.FixedFormatter(['Molecular Features']))
     
     figpro = plt.gcf()
-    figpro.set_size_inches(7, 3.5)
+    figpro.set_size_inches(6, 3)
     figpro.savefig('./static/image/sigpro'+str(IDR)+'.png', dpi=100)
     plt.clf()
 

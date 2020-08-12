@@ -3,213 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="Evolutionary Signatures of Intrinsically Disordered Regions">
-    <title>Evolutionary Signature Display</title>
-
+	<title>Evolutionary Signature Display</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-      <style>  a:link {text-decoration: none;}
-			/* Style tab links */
-				.tablink {
-				  background-color: #555;
-				  color: white;
-				  float: left;
-				  border: none;
-				  outline: none;
-				  cursor: pointer;
-				  padding: 14px 16px;
-				  font-size: 17px;
-				  width: 25%;
-				}
-
-				.tablink:hover {
-				  background-color: #777;
-				}
-
-				/* Style the tab content (and add height:100% for full page content) */
-				.tabcontent {
-				  color: black;
-				  display: none;
-				  padding: 100px 20px;
-				  height: 100%;
-				}
-
-				@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
-
-				ol {
-				  list-style: none;
-				  counter-reset: my-awesome-counter;
-				  display: flex;
-				  flex-wrap: wrap;
-				  margin: 0;
-				  padding: 0;
-				}
-				ol li {
-				  counter-increment: my-awesome-counter;
-				  display: flex;
-				  width: 50%;
-				  font-size: 0.8rem;
-				  margin-bottom: 0.5rem;
-				}
-				ol li::before {
-				  content: "0" counter(my-awesome-counter);
-				  font-weight: bold;
-				  font-size: 3rem;
-				  margin-right: 0.5rem;
-				  font-family: 'Abril Fatface', serif;
-				  line-height: 1;
-				}
-
-
-
-	     body {
-			padding: 1rem;
-			font-family: sans-serif;
-	          }
-	    .body h2{
-                        font-size: 20px;
-                        font-weight: 300;
-                  }
-
-      </style>
 </head>
 <body>
 
-
-<div class="header">
-  <a href="{{ url_for('index') }}"><h1>Evolutionary Signatures of Intrinsically Disordered Regions</h1></a>
-
-</div>
-
-<div class="topnav">
-   <a href="{{ url_for('index') }}">home</a>
-  <a href="{{ url_for('about') }}">About</a>
-  <a href="{{ url_for('contact') }}">Contact</a>
-</div>
-
-<div class="row">
-  <div class="column side2">
-  <a href="{{ url_for('index') }}"<button class="button grad">SEARCH</button></a>
-  <form action="{{ url_for('cluster') }}">
-  <button class="button grad">CLUSTER</a></button>
-  </form>
-  <form action="{{ url_for('faq') }}">
-  <button class="button grad">FAQ</button>
-  </form>
-  <form action="{{ url_for('download') }}">
-  <button class="button grad">DOWNLOAD</button>
-  </form>
-  </div>
-
-<div class="column right " style="padding:5px">
-	<button class="tablink" onclick="openPage('Overview', this,'orange')"id={{default1}}>Overview</button>
-	<button class="tablink" onclick="openPage('Group Views', this,'chocolate')">Group Views</button>
-	<button class="tablink" onclick="openPage('Details', this, 'lightgreen' )"id={{default2}}>Details</button>
-  <button class="tablink" onclick="openPage('Similar IDRs', this, 'lightcoral')">Similar IDRs</button>
-
-	<div id="Overview" class="tabcontent">
-		<div class=row >
-				<div class="body">
-					<h2b>Evolutionary signature of {{name}} in dataset " {{datasetname}} " </h2b>
-					<a href="https://www.uniprot.org/uniprot/{{sys}}" target="_blank">Link to Uniprot page for this protein</a>
-					<hr size="3" noshade>
-				</div>
-	</div>
-	<img src="{{ url_for('static', filename='image/sigpro'+gid+'.png') }}";	style="width: 700px;
-						 float:left;padding:0px;margin:35px" alt="sigpro.png">
-	<div class=row padding:25px;>
-	<p> Evolutionary signatures describe the extent to which molecular features of intrinsically disordered regions deviate from our null expectation in their evolution. 
-	If a molecular feature deviates in its evolution from our null expectation, we predict it is under selection, and thus may be important for the function of the IDR 
-	in question. Evolutionary signatures can be used as a tool to generate hypotheses about molecular features that could be important for the function of individual IDRs.
-	<a href="{{ url_for('faq')}}" target="_blank" style="color:red">(More on FAQ)</a></p>
-	 
-	
-
-	<h2> Explore in steps: </h2>
-
-	<ol>
-		<li>- Get an overview of all Z-scores, and find values of features that might be interesting to you.</li>
-		<li>- Click "Groupview" tab to see sorted top features by groups of molecular features. View details of Z-scores in every group in the "Details" tab. </li>
-		<li>- Find other IDRs with similar evolutionary signatures.</li>
-	</ol>
-	</div>
-
-
- </div>
-
-	<div id="Group Views" class="tabcontent">
-		<div class=row >
-        <div class="body">
-					<h2b>Sorted Top ZScore Absolute Values for Every Group</h2b>
-					<hr size="3" noshade>
-				</div>
-
-		<img src="{{ url_for('static', filename='image/sigbar'+gid+'.png') }}";
-              style="width: 700px;     float:left;padding:0px;margin:15px" alt="sigbar.png">
-		<div>
-        <p>Evolutionary signature values (absolute value) sorted by molecular feature group for this IDR (top 5 Z-score absolute values barplot for every group).</p>
-
-        {% for gl in range(group_list.shape[0]) %}
-		        <li>{{group_list.iloc[gl,0]}}  {{group_list.iloc[gl,2]}} </li>
-		{% endfor %}
-				<p> See Z-score value for every group in the "Details" tab. 
-			</div>
+	<header>
+		<div class="container">
+		<a href="{{ url_for('index') }}"><h1>Evolutionary Signatures <span class="shine">of Intrinsically Disordered Regions</span></h1></a>
 		</div>
-	</div>
+	</header>
 
+	<div class="topnav">
+		<div class=container> 
+			<a href="{{ url_for('index') }}">home</a>
+			<a href="{{ url_for('about') }}">About</a>
+			<a href="{{ url_for('contact') }}">Contact</a>
+			</div>
+	    </div>
 
-	<div id="Details" class="tabcontent">
-		<div class="column right " style="padding:5px">
-		   <div class=row >
-		        <div class="body">
-							<h2b>Details of Signature Z-scores of Every Group</h2b>
-							<hr size="3" noshade>
-		    		</div>
+	<div class="main">
+		<div class="container">
+			<div class="column sidenav">
+				<form action="{{ url_for('index') }}">
+				<button class="button grad">SEARCH</button>
+				</form>
+				<form action="{{ url_for('cluster') }}">
+				<button class="button grad">CLUSTER</a></button>
+				</form>
+				<form action="{{ url_for('faq') }}">
+				<button class="button grad">FAQ</button>
+				</form>
+				<form action="{{ url_for('download') }}">
+				<button class="button grad">DOWNLOAD</button>
+				</form>
+			</div>
 
-		  </div>
-			<div>
-		        <img src="{{ url_for('static',
-		                   filename='image/sigdiv'+gid+'g'+group+'.png') }}"style="width: 500px;float:left;
-		                   padding:0;margin:35px;"alt="sigbar.png">
-		   </div>
-		    <br>
+			<div class="column right " style="padding:5px">
+				<button class="tablink" onclick="openPage('Overview', this,'orange')"id={{default1}}>Overview</button>
+				<button class="tablink" onclick="openPage('Group Views', this,'chocolate')">Group Views</button>
+				<button class="tablink" onclick="openPage('Details', this, 'lightgreen' )"id={{default2}}>Details</button>
+				<button class="tablink" onclick="openPage('Similar IDRs', this, 'lightcoral')">Similar IDRs</button>
+				<button class="tablink" onclick="openPage('ZFplot', this, 'lightblue')" id={{default3}}>ZFplot</button>
 
-		   <div class="row" >
-
-		   <p>The left plot shows detailed z-score values for one molecular feature group. To see another
-		      group, choose from one of the following:</p>
-
-
-		   <form action="/search" method="post" >
-		   {% for gl in range(group_list.shape[0]) %}
-		        <input  type="radio" name="group"  value="{{name}},{{group_list.iloc[gl,5]}},{{dataset}}">{{group_list.iloc[gl,0]}} {{group_list.iloc[gl,2]}}</input><br>
-		   {% endfor %}
-		   <br>
-		   <input type="submit" name="submit_button" value="Go!">
-		   </form><br>
-		          <p> <a href="{{ url_for('faq')}}" target="_blank" style="color:red">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
-                  <p>For definitions of the molecular feature labels, you can download a table <a href="{{ url_for('elife_supp1') }}"download="Feature_symbol.csv"> here </a>.</p>
-		 </div>
-	 </div>
-	</div>
-
-	<div id="Similar IDRs" class="tabcontent">
-		<div class=row>
-					<div class="body">
-						<h2b>Similar IDRs</h2b>
+				<div id="Overview" class="tabcontent">
+					<div>
+						<p style="font-size: 20px;font-weight: 300;">Evolutionary signature of {{name}} in dataset " {{datasetname}} " 
+						<a href="https://www.uniprot.org/uniprot/{{sys}}" target="_blank"><span style="font-size:15px">Link to Uniprot page for this protein</span></a></p>
 						<hr size="3" noshade>
-			</div>
-		<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below. Choose one to see its evolutionary signature: </p>
-		<p><a href="{{ url_for('faq')}}" target="_blank" style="color:red"> (How are these similar IDRs determined?)</a></p>
-		 <form target="_blank" action="/search" method="post" >
-		   {%for simiidr in simi %}
-		      <input  type="radio" name="simi"  value="{{ simiidr.split(";")[0].strip() }},{{dataset}}">{{simiidr.split(";")[0].strip()}},  &nbsp &nbsp  Protein common name: {{simiidr.split(";")[1].strip()}} </input><br>
-		   {% endfor %}
-		 <br>
-		 <input  type="submit" name="submit_simi" value="Go!">
-		 </form>
+					</div>
 
+					<img src="{{ url_for('static', filename='image/sigpro'+gid+'.png') }}";	style="width: 600px;
+										float:left;padding:0px;margin:5px" alt="sigpro.png">
+				
+					<div class="column side">
+						<p> Evolutionary signatures describe the extent to which molecular features of intrinsically disordered regions deviate from our null expectation in their evolution. 
+						If a molecular feature deviates in its evolution from our null expectation, we predict it is under selection, and thus may be important for the function of the IDR 
+						in question. Evolutionary signatures can be used as a tool to generate hypotheses about molecular features that could be important for the function of individual IDRs.
+						<a href="{{ url_for('faq')}}" target="_blank" style="color:aqua">(More on FAQ)</a></p>
+					</div>	
+
+					<div class=column full>
+						<h2> Explore in steps: </h2>
+							<ol>
+								<li> Get an overview of all Z-scores, and find values of features that might be interesting to you.</li>
+								<li> Click "Groupview" tab to see sorted top features by groups of molecular features. View details of Z-scores in every group in the "Details" tab. </li>
+								<li> Find other IDRs with similar evolutionary signatures.</li>
+								<li>In "ZFplot" tab view the ZScore - Molecular Feature scatter plot, that identifying molecular features for IDR function using FAIDR method</li>
+							</ol>
+					</div>
+				</div>
+
+				<div id="Group Views" class="tabcontent">
+					<p style="font-size: 20px;font-weight: 300;">Sorted Top ZScore Absolute Values for Every Group</p>
+						<hr size="3" noshade>
+
+					<img src="{{ url_for('static', filename='image/sigbar'+gid+'.png') }}";
+						style="width: 600px;     float:left;padding:0px;margin:15px" alt="sigbar.png">
+
+					<div class="column side">
+						<p>Evolutionary signature values (absolute value) sorted by molecular feature group for this IDR (top 5 Z-score absolute values barplot for every group).</p>
+						{% for gl in range(group_list.shape[0]) %}
+						<li>{{group_list.iloc[gl,0]}}  {{group_list.iloc[gl,2]}} </li>
+						{% endfor %}
+						<p> See Z-score value for every group in the "Details" tab. </p>
+					</div>
+				</div>
+
+
+				<div id="Details" class="tabcontent">
+					<p style="font-size: 20px;font-weight: 300;">Details of Signature Z-scores of Every Group</p>
+									<hr size="3" noshade>
+						<img src="{{ url_for('static',
+								filename='image/sigdiv'+gid+'g'+group+'.png') }}"style="width: 500px;float:left;
+								padding:0;margin:15px;"alt="zfplot.png">
+						<br>
+
+					<div class="column side">
+						<h3>Choose other groups</h3>
+						<p>The left plot shows detailed z-score values for one molecular feature group. To see another group, choose from one of the following:</p>
+
+						<form action="/search" method="post" >
+						{% for gl in range(group_list.shape[0]) %}
+								<input  type="radio" name="group"  value="{{name}},{{group_list.iloc[gl,5]}},{{dataset}}">{{group_list.iloc[gl,0]}} {{group_list.iloc[gl,2]}}</input><br>
+						{% endfor %}
+						<br>
+						<input type="submit" name="submit_button" value="Go!">
+						</form><br>
+						<p> <a href="{{ url_for('faq')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
+						<p>For definitions of the molecular feature labels, you can download a table <a href="{{ url_for('elife_supp1') }}"download="Feature_symbol.csv"> here </a>.</p>
+					</div>
+				</div>
+
+
+				<div id="Similar IDRs" class="tabcontent">
+					<p style="font-size: 20px;font-weight: 300;">Similar IDRs</p>
+						<hr size="3" noshade>
+					<p>The 10 IDRs most similar to this IDR({{name}}) in terms of evolutionary signature are listed below. Choose one to see its evolutionary signature: </p>
+					<p><a href="{{ url_for('faq')}}" target="_blank" style="color:red"> (How are these similar IDRs determined?)</a></p>
+					
+					<form target="_blank" action="/search" method="post" >
+					{%for simiidr in simi %}
+						<input  type="radio" name="simi"  value="{{ simiidr.split(";")[0].strip() }},{{dataset}}">{{simiidr.split(";")[0].strip()}},  &nbsp &nbsp  Protein common name: {{simiidr.split(";")[1].strip()}} </input><br>
+					{% endfor %}
+					<br>
+					<input  type="submit" name="submit_simi" value="Go!">
+					</form>
+				</div>
+			
+			
+				<div id="ZFplot" class="tabcontent">
+					<p style="font-size: 20px;font-weight: 300;">ZScore - Molecular Feature scatter plot, identifying molecular features for IDR function using FAIDR method</p>
+							<hr size="3" noshade>
+
+						<img id='zfplot'src="{{ url_for('static',
+								filename='image/zf'+tstats_col+'for'+gid+'.png') }}"style="width: 500px;float:left;
+								padding:0;margin:35px;"alt="sigbar.png">
+						<br>
+
+						<div class="column side">
+							<h2>ZFplot</h2>
+							<p>The ZFplot shows, using FAIDR method, some molecular features are identified as associated with the function annotation. </p>
+							<p>ZFplot is a scatter plot showing the correlation of Zscores and statistics of molecular features of this IDR.</p>
+							<p>x axis is the T values of the L1 regularized regression coefficients of the molecular features, y axis is the ZScores (evolutionary signatures).</p>
+
+							<div id="anns_list">
+									<p>Below is a list of the GO terms annotated to this IDR. To see ZFplot of other GO terms annotated to this IDR, choose from one of the following:</p>
+							
+									<form  action="/search" method="post" >
+									{% for ann in anns %}
+									<input  type="radio" name="anns"  value="{{gid}},{{ann}},{{dataset}}">{{ann}} </input><br>
+									{% endfor %}
+									<br>
+									<input  type="submit" name="submit_ann" value="Go!">
+									</form>
+							</div>		  
+							<br>
+							<p> <a href="{{ url_for('faq')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
+							<p>To view a preprint of the paper of the FAIDR method, refer to: <a href="https://www.biorxiv.org/content/10.1101/2020.06.23.167361v1", target=blank> here </a>.</p>
+						</div>
+					</div>
+			</div>
 		</div>
 	</div>
-
 	<script>
 	function openPage(pageName,elmnt,color) {
 	  var i, tabcontent, tablinks;
@@ -225,30 +181,31 @@
 	  elmnt.style.backgroundColor = color;
 	}
 
-	// Get the element with id="defaultOpen" and click on it
+	var anns_var = []
+	{% for ann in anns %}
+	anns_var.push('{{ann}}');
+	{% endfor %}
+	if ({{dataset}} ==0){
+		document.getElementById("anns_list").innerHTML = '<strong>ZFplots are not produced for Yeast_elife_2019 dataset, you can search for other dataset to see the plot.</strong> For reference, the left plot is a ZFplot for NADH dehydrogenase [ubiquinone] iron-sulfur protein 3, mitochondrial (in Human disopred3 dataset). ';
+		
+		document.getElementById("zfplot").src = "{{ url_for('static',
+		                   filename='image/zf6for6972.png') }}";	
+	}
+	else if (anns_var == undefined || anns_var.length == 0){
+		document.getElementById("anns_list").innerHTML = '<strong>This IDR is not annotated to any GO terms in our annotation dataset.</strong> ZFplot can not draw for this IDR specifically, you can search for other IDR to see the ZFplot. For reference, the left plot is a ZFplot for NADH dehydrogenase [ubiquinone] iron-sulfur protein 3, mitochondrial (in Human disopred3 dataset). ';
+		
+		document.getElementById("zfplot").src = "{{ url_for('static',
+		                   filename='image/zf6for6972.png') }}";			  
+	}
+	
 	document.getElementById("defaultOpen").click();
 	</script>
 
-
-
-
-
-</div>
-
-  </div>
-
-
-
-
-</div>
-
-<div class="footer">
-  <p>Alan Moses' Lab © 2019</p>
-  <h1b>Links:</h1b><br>
-  <a target=blank href="http://www.moseslab.csb.utoronto.ca/">Moses Lab</a>
-</div>
+	<div class="footer">
+	<p>Alan Moses' Lab © 2019</p>
+	<h1b>Links:</h1b><br>
+	<a target=blank href="http://www.moseslab.csb.utoronto.ca/">Moses Lab</a>
+	</div>
 </body>
-
-</div>
 
 </html>

@@ -1,5 +1,0 @@
-dataset name	data file name	group.comfig file name	similar_idr file name	eg1	eg2	eg3
-Yeast_elife_2019	sig_yeast.csv	group_config_yeast.csv	sim_yeast.csv	COX15	YER141W	YER141W_aa_1-45
-Human_disopred3	sig_human_disopred3.csv	group_config_human.csv	sim_human.csv	p53	P04637	HUMAN11953_1to96
-Yeast_2020	sig_yeast_2020.csv	group_config_yeast_2020.csv	sim_yeast_2020.csv	COX15	YER141W	YER141W_idr_1
-Human_SPOTd	sig_human_SPOTd.csv	group_config_human_new.csv	sim_human_new.csv	p53	P04637	HUMAN11953_282to324
