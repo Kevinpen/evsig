@@ -82,10 +82,10 @@ def plot_scatter(col, IDR, dataset=0):
     features = get_features(col, dataset)
     tstats_values = get_tstats(col, dataset)        
     zscores = get_zscore(IDR,features, dataset)
-    plt.style.use('seaborn')
+    plt.style.use('default')
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    plt.suptitle(f'Zscore-Molecular feature Scatter Plot of {data[dataset].iloc[IDR,0]} \n for annotation{tstats[dataset].columns[col]}')
+    plt.suptitle(f'ZFplot of {data[dataset].iloc[IDR,0]} \n for annotation{tstats[dataset].columns[col]}')
 
     # Move left y-axis and bottim x-axis to centre, passing through (0,0)
     ax.spines['left'].set_position('center')
@@ -101,13 +101,23 @@ def plot_scatter(col, IDR, dataset=0):
     ax.set_xlim(-max(abs(tstats_values))-1,max(abs(tstats_values))+1)
     ax.set_ylim(-max(abs(pd.Series(zscores)))-1,max(abs(pd.Series(zscores)))+1)
     
-    ax.xaxis.set_label_coords(1.02, 0.49)
+    for v in range(2, int(plt.ylim()[1])):
+        ax.axhspan(v, v+2, color='PowderBlue', alpha=0.2)
+    for v in range(int(plt.ylim()[0]),-2):
+        ax.axhspan(v, v+2, color='PowderBlue', alpha=0.2)
+    for h in range(2, int(plt.xlim()[1])):
+        ax.axvspan(h, h+2, color='PowderBlue', alpha=0.2)
+    for h in range(int(plt.xlim()[0]),-2):
+        ax.axvspan(h, h+2, color='PowderBlue', alpha=0.2)
+    
+    
+    ax.xaxis.set_label_coords(1.06, 0.49)
     ax.yaxis.set_label_coords(0.5, 1)
     ax.xaxis.label.set_color('orange')
     ax.yaxis.label.set_color('orange')
-    y_label = ax.set_ylabel('Zscores')
+    y_label = ax.set_ylabel('Z-score')
     y_label.set_rotation(0)
-    ax.set_xlabel('Tstats')
+    ax.set_xlabel('F-score')
     
     plt.scatter(tstats_values, zscores)
     for i, txt in enumerate(features):
@@ -124,11 +134,13 @@ def plot_scatter(col, IDR, dataset=0):
     
 if __name__ == '__main__':
     print(getindex_idr('HUMAN12627_451to512'))
-    print(getindex_cid('KR161'))
-    print(getindex_sid('O15399'))
+    idx1= getindex_cid('NDUS3')
+    print(idx1)
+    idx2=getindex_sid('O15399')
+    print(idx2)
     print(get_zscore(0,['FCR','AA_P']))
  
-    plot_scatter(5,2916)
+    plot_scatter(5,idx1[0])
     
 
 

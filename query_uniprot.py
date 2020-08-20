@@ -17,10 +17,10 @@ import requests
 BASE = 'http://www.uniprot.org'
 KB_ENDPOINT = '/uniprot/'
 query = pd.DataFrame(columns=['Entry', 'Entry name', 'Status', 'Protein names', 'Gene names','Organism', 'Length','GO'])
-GO_list=['GO:0007093','GO:0007049',	'GO:0044770','GO:0022402', 'GO:0010564', 'GO:0051726', 'GO:0044843','GO:0044839','GO:0016607','GO:0010494','GO:0000932','GO:0043565']
+GO_list=['GO:0006974','GO:0035556',	'GO:0004672','GO:0030479', 'GO:0005618', 'GO:0005576','GO:0005643','GO:0010494','GO:0003729','GO:0042254','GO:0006364','GO:0000932','GO:0043565','GO:0005759','GO:0005743']
 
 for go in GO_list:
-    payload = {'query':  go +  ' AND organism :"homo sapiens" AND reviewed:yes','format': 'tab'}
+    payload = {'query':  go +  ' AND organism :"Saccharomyces cerevisiae" AND reviewed:yes','format': 'tab'}
     result = requests.get(BASE + KB_ENDPOINT, params=payload)
     res = pd.DataFrame(pd.read_csv(StringIO(result.text), sep="\t"))
     res['GO'] = [go]*res.shape[0]
@@ -28,36 +28,52 @@ for go in GO_list:
 
 goterms = query.iloc[:,7].unique() 
 
-data = pd.read_table('./data/sig_human_disopred3.csv')
+data = pd.read_table('./data/sig_yeast_2020.csv')
 
-ccTarg_disopred3 = pd.DataFrame(columns=['IDRname', 'Uniprot ID']+goterms.tolist())
-ccTarg_disopred3['IDRname'] = data.iloc[:,0]
-ccTarg_disopred3['Uniprot ID'] = data.iloc[:,1]
-ccTarg_disopred3.iloc[:,2:] = 0
+pTarg_yeast = pd.DataFrame(columns=['IDRname', 'systematic name']+goterms.tolist())
+pTarg_yeast['IDRname'] = data.iloc[:,0]
+pTarg_yeast['systematic name'] = data.iloc[:,1]
+pTarg_yeast.iloc[:,2:] = 0
 
+# Get uniprot id for yeast protein from systematic name
+yeast_ref = pd.read_table("./data/yeast_reference.csv")
+def getuni(sys):
+    for i in range(len(yeast_ref)):
+        if yeast_ref.iloc[i,0] == sys:
+            return yeast_ref.iloc[i,1]
+    return None   
 
+#For human data
 for i in range(len(data)):
     if data.iloc[i,1] in query.iloc[:,0].values:
         idx = [index for index, value in enumerate(query.iloc[:,0].values) if value ==  data.iloc[i,1]]
         go = query.iloc[idx,7]
-        go_col = ccTarg_disopred3.columns.get_loc(go.iloc[0])
-        ccTarg_disopred3.iloc[i,go_col] = 1
-        
+        go_col = pTarg_yeast.columns.get_loc(go.iloc[0])
+        pTarg_yeast.iloc[i,go_col] = 1
+
+#For yeast data
+for i in range(len(data)):
+    uni = getuni(data.iloc[i,1])
+    if uni in query.iloc[:,0].values:
+        idx = [index for index, value in enumerate(query.iloc[:,0].values) if value == uni]
+        go = query.iloc[idx,7]
+        go_col = pTarg_yeast.columns.get_loc(go.iloc[0])
+        pTarg_yeast.iloc[i,go_col] = 1     
 
 
 go_ann =[]
 
 for go in GO_list:
-    with open("./go.obo", "r") as f:
+    with open("../flaskweb/go.obo", "r") as f:
         for line in f:
             if line=='id: '+go +'\n':
                 go_ann.append(go + ', ' + f.readline().rstrip())
         f.close()
 
-ccTarg_disopred3.columns=['IDRname','Uniprot ID'] + go_ann
+pTarg_yeast.columns=['IDRname','systematic name'] + go_ann
 
-ccTarg_disopred3.to_csv('./data/moreTarg_disopred3.csv', index=False)
+pTarg_yeast.to_csv('./data/pTarg_yeast.csv', index=False)
 
-ccTarg_disopred3.sum()
-query.to_csv('./query_more.csv',index=False)
+pTarg_yeast.sum()
+query.to_csv('./pquery_yeast.csv',index=False)
 
