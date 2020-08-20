@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -254,7 +252,6 @@ def sigpro(IDR, dataset):
     figpro.set_size_inches(6, 3)
     figpro.savefig('./static/image/sigpro'+str(IDR)+'.png', dpi=100)
     plt.clf()
-
 
 
 

@@ -1,12 +1,15 @@
 gang@valrhona.csb.utoronto.ca:/home/gang
 gang.peng@yeastspotter.csb.utoronto.ca:/home/gang.peng
-Changeme1608!
+
 
 
 ssh gang.peng@142.150.219.123
 scp evolsig.zip gang.peng@142.150.219.123:/home/gang.peng
+Changeme1608!
 
-ssh gang@142.150.219.251
+
+
+ssh moseslab@142.150.219.251
 scp evoSig.zip moseslab@142.150.219.251:/home/moseslab
 
 
@@ -34,6 +37,9 @@ sudo sysv-rc-conf
 
 service --status-all
 
-
- │                                                       
+                                                  
 http://142.150.219.251/
+
+
+
+Anaconda3-2020.07-Linux-x86_64.sh
