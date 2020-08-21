@@ -85,7 +85,7 @@ def plot_scatter(col, IDR, dataset=0):
     plt.style.use('default')
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    plt.suptitle(f'ZFplot of {data[dataset].iloc[IDR,0]} \n for annotation{tstats[dataset].columns[col]}')
+    plt.suptitle(f'ZFplot of {data[dataset].iloc[IDR,0]} \n for annotation {tstats[dataset].columns[col]}')
 
     # Move left y-axis and bottim x-axis to centre, passing through (0,0)
     ax.spines['left'].set_position('center')

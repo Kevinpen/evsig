@@ -135,7 +135,9 @@ def yeast_jtv():
 @app.route('/elife_supp1/')
 def elife_supp1():
     return render_template('Feature_symbol.csv')
-
+@app.route('/table/')
+def table():
+    return render_template('table.html')
 
 
 @app.route('/search',methods=['POST','GET']) #Response for yeast search

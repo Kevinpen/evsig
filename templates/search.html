@@ -110,7 +110,7 @@
 						<br>
 						<input type="submit" name="submit_button" value="Go!">
 						</form><br>
-						<p> <a href="{{ url_for('faq')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
+						<p> <a href="{{ url_for('table')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
 						<p>For definitions of the molecular feature labels, you can download a table <a href="{{ url_for('elife_supp1') }}"download="Feature_symbol.csv"> here </a>.</p>
 					</div>
 				</div>
@@ -143,10 +143,9 @@
 
 						<div class="column side">
 							<h2>ZFplot</h2>
-				    		<p>ZFplot is a scatter plot showing the correlation of Z-scores and statistics of molecular features of this IDR(F-scores).</p>
-							<p>The ZFplot shows, using FAIDR method, some molecular features are identified as associated with the function annotation. All data points are molecular features with non-zero F-scores. </p>
-
-							<p>x axis is F-score (the T values of the L1 regularized regression coefficients of the molecular features), y axis is the Z-Score (evolutionary signatures).</p>
+							<p>The ZFplot shows, using FAIDR method, some molecular features are identified as associated with the function annotation. </p>
+							<p>ZFplot is a scatter plot showing the correlation of Zscores and statistics of molecular features of this IDR.</p>
+							<p>x axis is the T values of the L1 regularized regression coefficients of the molecular features, y axis is the ZScores (evolutionary signatures).</p>
 
 							<div id="anns_list">
 									<p>Below is a list of the GO terms annotated to this IDR. To see ZFplot of other GO terms annotated to this IDR, choose from one of the following:</p>
@@ -160,7 +159,7 @@
 									</form>
 							</div>		  
 							<br>
-							<p> <a href="{{ url_for('faq')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
+							<p> <a href="{{ url_for('table')}}" target="_blank" style="color:aqua">What do the molecular feature labels like "DOC_CKS1_1" stand for?</a></p>
 							<p>To view a preprint of the paper of the FAIDR method, refer to: <a href="https://www.biorxiv.org/content/10.1101/2020.06.23.167361v1", target=blank> here </a>.</p>
 						</div>
 					</div>
