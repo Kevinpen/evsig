@@ -6,9 +6,11 @@ Created on Tue Jul 28 10:08:31 2020
 """
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 datasets2 = pd.read_csv("./data/dataset_config2.csv")
+
 data = []
 anns = []
 tstats = []
@@ -59,6 +61,12 @@ def get_ann(IDR, dataset=0):
     annotation = list(anns[dataset].columns.values[annotated])
     return annotation
 
+# FInd GO terms not annotated to this IDR
+def get_non_ann(IDR, dataset=0):
+    annotated_id = [i for i, e in enumerate(anns[dataset].iloc[IDR,2:]) if e !=0]
+    non_ann = np.delete(anns[dataset].columns.values[2:], annotated_id)
+    return non_ann
+
 
 def get_features(col, dataset=0):
     idx = tstats[dataset].iloc[:,col][tstats[dataset].iloc[:,col].notnull()].index
@@ -85,7 +93,7 @@ def plot_scatter(col, IDR, dataset=0):
     plt.style.use('default')
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    plt.suptitle(f'ZFplot of {data[dataset].iloc[IDR,0]} \n for annotation {tstats[dataset].columns[col]}')
+    plt.suptitle(f'ZFplot of {data[dataset].iloc[IDR,0]} for annotation: \n{tstats[dataset].columns[col]}',fontsize="medium")
 
     # Move left y-axis and bottim x-axis to centre, passing through (0,0)
     ax.spines['left'].set_position('center')
