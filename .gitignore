@@ -1,0 +1,5 @@
+/static/image
+.directory
+__pycache__
+.ipynb_checkpoints
+.Rhistory
