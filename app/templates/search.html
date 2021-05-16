@@ -10,13 +10,13 @@
 
 	<header>
 		<div class="container">
-		<a href="{{ url_for('main.index') }}"><h1>Evolutionary Signatures <span class="shine">of Intrinsically Disordered Regions</span></h1></a>
+		<a href="{{ url_for('choose.index') }}"><h1>Evolutionary Signatures <span class="shine">of Intrinsically Disordered Regions</span></h1></a>
 		</div>
 	</header>
 
 	<div class="topnav">
 		<div class=container> 
-			<a href="{{ url_for('main.index') }}">home</a>
+			<a href="{{ url_for('choose.index') }}">home</a>
 			<a href="{{ url_for('main.about') }}">About</a>
 			<a href="{{ url_for('main.contact') }}">Contact</a>
 			</div>
@@ -25,7 +25,7 @@
 	<div class="main">
 		<div class="container">
 			<div class="column sidenav">
-				<form action="{{ url_for('main.index') }}">
+				<form action="{{ url_for('choose.index') }}">
 				<button class="button grad">SEARCH</button>
 				</form>
 				<form action="{{ url_for('main.cluster') }}">

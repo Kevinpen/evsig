@@ -134,7 +134,7 @@ def plot_scatter(col, IDR, dataset=0):
 
     figzf = plt.gcf()
     figzf.set_size_inches(5, 5)
-    figzf.savefig('./static/image/zf'+str(col)+'for'+str(IDR)+'.png', dpi=100)
+    figzf.savefig('./app/static/image/zf'+str(col)+'for'+str(IDR)+'.png', dpi=100)
     plt.clf()
     plt.style.use('default')
 
