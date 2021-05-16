@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description", content="Evolutionary Signatures of Intrinsically Disordered Regions">
+    <meta name="author" content="Alan Moses' Lab, Gang Peng">
+    <title>{% block title %}{% endblock %}</title> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+</head>
+<body>
+    
+<header>
+  <div class="container">
+  <a href="{{ url_for('main.index') }}"><h1>Evolutionary Signatures <span class="shine">of Intrinsically Disordered Regions</span></h1></a>
+  </div>
+</header>
+
+<div class="topnav">
+  <div class="container">
+  <a href="{{ url_for('main.index') }}">Home</a>
+  <a href="{{ url_for('main.about') }}">About</a>
+  <a href="{{ url_for('main.contact') }}">Contact</a>
+  </div>
+</div>
+
+<div class="row"> 
+  <div class="container">
+    <div class="column sidenav"> 
+      <div class='container'>
+        <a href="{{ url_for('main.index') }}">
+        <button class="button">SEARCH</button>
+        </a>
+        <form action="{{ url_for('main.cluster') }}">
+        <button class="button">CLUSTER</button>
+        </form>
+        <form action="{{ url_for('main.faq') }}">
+        <button class="button">FAQ</button>
+        </form>
+        <form action="{{ url_for('main.download') }}">
+        <button class="button">DOWNLOAD</button>
+        </form>
+      </div>
+    </div>
+    
+    
+    <div class="column middle">
+      <div class="container">
+      {% block body %}{% endblock %}
+      </div>
+    </div>
+    
+    <div class="column side">
+      <div class="container">
+      {% block side %}{% endblock %}
+      </div>
+    </div>  
+    <div class="column full">
+      {% block side2 %}{% endblock %}
+    </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <p>Alan Moses' Lab © 2019</p>
+  <h1b>Links:</h1b><br>
+  <a target=blank href="http://www.moseslab.csb.utoronto.ca/">Moses Lab</a>
+</div>
+
+</body>
+</html>

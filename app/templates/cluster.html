@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title%}Cluster{% endblock %}
+
+{% block body%}
+<h2>Cluster</h2>
+The Yeast_elife_2019 IDR evolutionary signature data were clustered using Cluster 3.0 program (de Hoon et al., 2004). The resulting files can 
+be viewed by the TreeView program. For instructions on how to visualize the clusters, please consult the "Java TreeView User's Manual" 
+in <a href="http://jtreeview.sourceforge.net/docs/JTVUserManual/single.html">
+http://jtreeview.sourceforge.net/docs/JTVUserManual/single.html</a><br>
+<br>
+You will need these data files:<br>
+<br>
+1, Download the cdt file, <a href="{{ url_for('yeast_cdt') }}"download="tz_evolsig_clusterplot_mar13.cdt">click here </a>
+<br>
+<br>
+
+
+2, Download the gtr file, <a href="{{ url_for('yeast_gtr') }}"download="tz_evolsig_clusterplot_mar13.gtr">click here </a>
+<br>
+<br>
+3, Download the jtv file, <a href="{{ url_for('yeast_jtv') }}"download="tz_evolsig_clusterplot_mar13.jtv">click here </a>
+
+{% endblock %}
+ {% block side%}
+  <h2>Paper Citation</h2>
+    <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. doi: 10.1101/578716</p>
+{% endblock %}

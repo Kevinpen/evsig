@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+    {% block title %}Index{% endblock %}
+    {% block body %}
+    
+    
+ 
+    <h2>Search</h2>
+    <p> <b>1, Select a dataset:</b></p>
+      <form action="#" method="post" id="datasetform" autocomplete="off">
+      <input  type="radio" name="dataset"  value="{{datasets_name[0]}}" onclick="getdataset()" checked>{{datasets_name[0]}}</input><br>
+       {% for dataset in datasets_name[1:] %} 
+       <input  type="radio" name="dataset"  value="{{dataset}}" onclick="getdataset()">{{dataset}}</input><br>
+       {% endfor %}
+
+    <br>
+    <b id=chosen>2, After select dataset:</b>
+    <p>Enter a protein <span id= "cid">cid</span>: <input id='common_name' type="text" name="cid" size="24" onfocus="this.value=''" ></textarea>
+     e.g. <a href="#" style="color:blue" onclick = "autofill();return true"><span id=ex1 style="font-size:85%">ex1</sp></a>
+    </p> 
+ 
+    <b>OR</b>
+    <p>Enter a protein <span id= "sid">sid</span>: <input id='systematic_id' type="text" name="sid" size="24" onfocus="this.value=''" ></textarea>
+     e.g. <a href="#" style="color:blue" onclick = "autofill2();return true"><span id=ex2 style="font-size:85%">ex2</span></a></p> 
+    
+    <b>OR</b>
+
+    <p>Enter an IDR name: <input id='IDR_name' type="text" name="idrname" size="24" onfocus="this.value=''" ></textarea>
+     e.g.<a href="#" style="color:blue" onclick = "autofill3();return true"><span id=ex3 style="font-size:85%">ex3</span></a></p>
+
+    <br>
+    <input type="submit" name=submit value="Go!" >
+    </form>
+
+    <script>
+    var exs = [];
+    {% for ex in examples %}
+    exs.push("{{ex}}")
+    {% endfor %}
+    
+    function getRadioVal(form, name) {
+    var val = new Array();
+    var radios = form.elements[name];
+    
+    for (var i=0, len=radios.length; i<len; i++) {
+        if ( radios[i].checked ) { 
+            val[0] = radios[i].value;
+            val[1] = i;
+            break; 
+        }
+    }
+    return val; 
+    }
+   
+    function getdataset() {
+    var val = getRadioVal(document.getElementById("datasetform"), 'dataset')[0];    
+    var index = getRadioVal(document.getElementById("datasetform"), 'dataset')[1];        
+    
+    document.getElementById("ex1").innerHTML=exs[index*3+0];
+    document.getElementById("ex2").innerHTML=exs[index*3+1];
+    document.getElementById("ex3").innerHTML=exs[index*3+2];
+    
+    document.getElementById("chosen").innerHTML= "2, For the selected dataset: " + val;
+    if (val.split("_")[0] == "Yeast"){
+    document.getElementById("cid").textContent= "common name";
+    }
+    else if (val.split("_")[0] == "Human"){
+    document.getElementById("cid").textContent= "gene name";
+    }
+    if (val.split("_")[0] == "Yeast"){
+    document.getElementById("sid").textContent= "systematic name";
+    }
+    else if (val.split("_")[0] == "Human"){
+    document.getElementById("sid").textContent= "Uniprot ID";
+    }
+    document.getElementById('common_name').value ='';
+    document.getElementById('systematic_id').value = '';
+    document.getElementById('IDR_name').value = '';  
+    }
+    
+    getdataset();
+    
+    function autofill(){
+    document.getElementById('common_name').value = document.getElementById("ex1").textContent;
+    }
+    function autofill2(){
+    document.getElementById('systematic_id').value = document.getElementById("ex2").textContent;
+    }
+    function autofill3(){
+    document.getElementById('IDR_name').value = document.getElementById("ex3").textContent;
+    }
+    
+    </script>
+
+    {% endblock %}
+    
+    {% block side %}  
+    <h2>Brief Introduction</h2>
+    <p>Evolutionary signatures describe the extent to which molecular features of intrinsically disordered regions deviate from our null expectation in their evolution. If a molecular feature deviates in its evolution from our null expectation, we predict it is under selection, and thus may be important for the function of the IDR in question.  </p>
+    <p>Evolutionary signatures can be used as a tool to generate hypotheses about molecular features that could be important for the function of individual IDRs. They can also be used to compare different IDRs and formulate hypotheses about their shared functions. </p>
+    <p>Input a protein or IDR name to see its evolutionary signature(s).</p>
+    {% endblock %}
+
+    {% block side2 %}  
+    <h4>Paper Citation</h4>
+    <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. <a href="https://elifesciences.org/articles/46883" target="blank">doi: 10.1101/578716</a></p>
+    {% endblock %}
+ 

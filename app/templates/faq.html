@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title%}Faq{% endblock %}
+
+{% block body%}
+
+<h2>Frequently Asked Questions</h2>
+
+<h4>1. How do you determine the most similar IDRs?</h4>
+The most similar IDRs are those with smallest distances to the currently searched IDR. The definition of distance is Pearson correlation
+ between the vectors of all Z-scores that comprise the evolutionary signature.<br>
+<br>
+To find the most similar IDRs, we calculate the distance between the currently searched IDR and all other IDRs in the dataset. We list the top 10 with the smallest distances. <br>
+<br>
+The list of most similar IDRs may differ from the adjacent IDRs in a global cluster plot (as in the data available in the “Cluster” section of this website).<br>
+
+ <h4>2. How to interpret the evolutionary signature?</h4>
+ 
+The evolutionary signature is a set of standard Z-scores quantifying the deviation of the evolution of molecular features in an IDR with respect to our null expectation. <br><br>
+As (a set of) Z-scores, the evolutionary signature is calculated by subtracting the mean of the simulations that form our null expectation (μ) from the value in the real IDR (x) 
+and divided by the standard deviation of the simulations (σ). The formula for the Z-score is Z = (x- μ)/ σ.<br><br>
+Our work (Zarin et al., eLife 2019) has shown that IDRs with similar evolutionary signatures are associated with similar functions.
+  
+<h4>3. What do the molecular feature labels like "DOC_CKS1_1" stand for?</h4>
+These labels are defined in a supplementary table in the Zarin et. al, 2019 paper. You can see the table 
+<a href="{{ url_for('table') }}", target=blank> here </a>.
+
+<h4>4. Will there be new data for other species available?</h4>
+We plan to release new datasets as they become available, not only for other species, but also updates for currently available species. Please check back for data updates.
+
+{% endblock %}
+
+   {% block side%}
+    <h2>Paper Citation</h2>
+    <p>Zarin, T., Strome, B., Ba, A. N. N., Alberti, S., Forman-Kay, J. D., & Moses, A. M. (2019). Proteome-wide signatures of function in highly diverged intrinsically disordered regions. eLife 2019;8:e46883. doi: 10.1101/578716</p>
+  {% endblock %}
+
