@@ -1,11 +1,10 @@
-#import os
-#from flask import g
+
+import config
+
 from app import create_app
 
-#g.datasets, g.datasets_name, g.examples = load_data()
 
-
-app = create_app()
+app = create_app(config)
 
 
 if __name__ == '__main__':
